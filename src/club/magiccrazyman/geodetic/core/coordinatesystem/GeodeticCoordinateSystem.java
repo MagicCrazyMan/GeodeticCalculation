@@ -241,7 +241,7 @@ public class GeodeticCoordinateSystem {
         delta = (alpha * sigma + beta * ((sin2O1 * cos2O0 + cos2O1 * sin2O0) - sin2O1)) * sinA0;
 
         //计算重点大地坐标及大地方位角
-        sinu2 = sinu1 * Math.cos(sigma) + cosu1 * sinA1 * Math.sin(sigma);
+        sinu2 = sinu1 * Math.cos(sigma) + cosu1 * Math.cos(A1) * Math.sin(sigma);
         B2 = Math.atan(sinu2 / (Math.sqrt(1 - e2) * Math.sqrt(1 - Math.pow(sinu2, 2))));
         lambda = Math.atan(sinA1 * Math.sin(sigma) / (cosu1 * Math.cos(sigma) - sinu1 * Math.sin(sigma) * Math.cos(A1)));
 
@@ -353,6 +353,7 @@ public class GeodeticCoordinateSystem {
 
         //计算反方位角
         A2 = Math.atan(cosu1 * Math.sin(lambda) / (b1 * Math.cos(lambda) - b2));
+        A2 += CalculationTools.degree2Rad(180);
         return new double[]{A1, A2, S};
     }
 

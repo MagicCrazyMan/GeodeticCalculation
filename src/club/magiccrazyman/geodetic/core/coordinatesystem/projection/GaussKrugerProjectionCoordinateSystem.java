@@ -614,7 +614,6 @@ public class GaussKrugerProjectionCoordinateSystem {
                 "Meter (1.0)",
                 "WGS_1984_GK_Zone_19"));
 
-
         /**
          * 高斯考虑投影坐标系实例
          */
