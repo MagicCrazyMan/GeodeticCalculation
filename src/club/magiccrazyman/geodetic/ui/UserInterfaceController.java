@@ -399,6 +399,8 @@ public class UserInterfaceController {
             latitudeMinsTextField2.clear();
             latitudeSecondsTextField2.clear();
             angleDegreeTextField2.clear();
+            angleMinsTextField2.clear();
+            angleSecondsTextField2.clear();
 
             longitudeDegreeTextField3.clear();
             longitudeMinsTextField3.clear();
@@ -407,6 +409,8 @@ public class UserInterfaceController {
             latitudeMinsTextField3.clear();
             latitudeSecondsTextField3.clear();
             angleDegreeTextField3.clear();
+            angleMinsTextField3.clear();
+            angleSecondsTextField3.clear();
 
             geodeticLineTextField.clear();
         }
