@@ -54,6 +54,18 @@ class GeodeticCoordinateSystemTest {
         assertEquals("51°16'32.4976\"", L2, String.format("L2：%f", LBA[0]));
         assertEquals("-37°43'44.1353\"", B2, String.format("B2：%f", LBA[1]));
         assertEquals("50°21'22.4896\"", A2, String.format("A2：%f", LBA[2]));
+
+        L1 = CalculationTools.degree2Rad(35 + 49 / 60.0 + 36.330 / 3600.0);
+        B1 = CalculationTools.degree2Rad(47 + 46 / 60.0 + 52.647 / 3600.0);
+        A1 = CalculationTools.degree2Rad(44 + 12 / 60.0 + 13.664 / 3600.0);
+        S = 44797.282;
+        LBA = Beijing54.directSolutionOfGeodeticProblem(L1, B1, A1, S);
+        L2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBA[0]));
+        B2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBA[1]));
+        A2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBA[2]));
+        assertEquals("36°14'45.0505\"", L2, String.format("L2：%f", LBA[0]));
+        assertEquals("48°4'9.6384\"", B2, String.format("B2：%f", LBA[1]));
+        assertEquals("224°30'53.5508\"", A2, String.format("A2：%f", LBA[2]));
     }
 
     @Test
@@ -70,5 +82,18 @@ class GeodeticCoordinateSystemTest {
         assertEquals("44°12'13.6681\"", A1, String.format("A1：%f", AAS[0]));
         assertEquals("224°30'53.5549\"", A2, String.format("A2：%f", AAS[1]));
         assertEquals("44797.2832", S, String.format("S：%f", AAS[2]));
+
+        L1 = CalculationTools.degree2Rad(51 + 16 / 60.0 + 32.5 / 3600.0);
+        B1 = CalculationTools.degree2Rad(-(37 + 43 / 60.0 + 44.1 / 3600.0));
+        L2 = CalculationTools.degree2Rad(114 + 20 / 60.0);
+        B2 = CalculationTools.degree2Rad(30 + 30 / 60.0);
+        precision = 0.000000000000000001;
+        AAS = Beijing54.inverseSolutionOfGeodeticProblem(L1, B1, L2, B2, precision);
+        A1 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(AAS[0]));
+        A2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(AAS[1]));
+        S = String.format("%.4f", AAS[2]);
+        assertEquals("50°21'22.4881\"", A1, String.format("A1：%f", AAS[0]));
+        assertEquals("225°0'0.0260\"", A2, String.format("A2：%f", AAS[1]));
+        assertEquals("9999999.2631", S, String.format("S：%f", AAS[2]));
     }
 }
