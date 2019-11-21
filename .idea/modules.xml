@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CoordinateTransformation.iml" filepath="$PROJECT_DIR$/CoordinateTransformation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/GeodeticCalculation.iml" filepath="$PROJECT_DIR$/GeodeticCalculation.iml" />
     </modules>
   </component>
 </project>

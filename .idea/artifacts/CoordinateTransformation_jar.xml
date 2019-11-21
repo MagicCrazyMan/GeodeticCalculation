@@ -2,7 +2,7 @@
   <artifact type="jar" name="CoordinateTransformation:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/CoordinateTransformation_jar</output-path>
     <root id="archive" name="CoordinateTransformation_jar.jar">
-      <element id="module-output" name="CoordinateTransformation" />
+      <element id="module-output" name="GeodeticCalculation" />
     </root>
   </artifact>
 </component>
