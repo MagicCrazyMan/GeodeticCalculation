@@ -1,5 +1,7 @@
 package club.magiccrazyman.geodetic.core.tools;
 
+import java.math.BigDecimal;
+
 /**
  * 计算辅助工具
  *
@@ -34,8 +36,10 @@ public class CalculationTools {
      * @return 格式化字符串
      */
     public static String degreeFormatter(double degree) {
+        BigDecimal bg = new BigDecimal(degree);
+        degree = bg.setScale(8, BigDecimal.ROUND_HALF_UP).doubleValue();
         boolean negative = false;
-        if(degree < 0){
+        if (degree < 0) {
             negative = true;
             degree = Math.abs(degree);
         }
@@ -43,10 +47,7 @@ public class CalculationTools {
         int m = (int) ((degree - d) * 60);
         double s = (degree - d) * 3600 - m * 60;
 
-        String result = String.format("%d°%d\'%.4f\"", d, m, s);
-        if(negative){
-            result = "-" + result;
-        }
+        String result = String.format("%s°%d\'%.4f\"", negative ? "-" + d : d, m, s);
         return result;
     }
 
@@ -54,7 +55,7 @@ public class CalculationTools {
      * 单位转换二合一方法
      *
      * @param input 输入参数
-     * @param mode 选择模式；0：弧度转角度；1：角度转弧度
+     * @param mode  选择模式；0：弧度转角度；1：角度转弧度
      * @return 输出结果
      */
     private static double unitConversion(double input, int mode) {
