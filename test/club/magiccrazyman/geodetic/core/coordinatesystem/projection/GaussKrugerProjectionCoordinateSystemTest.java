@@ -18,10 +18,10 @@ class GaussKrugerProjectionCoordinateSystemTest {
         String yz = String.format("%.4f", xy[1]);
         String x = String.format("%.4f", xy[2]);
         String y = String.format("%.4f", xy[3]);
-        assertEquals("3404079.3582", xz, String.format("xz：%s", xz));
-        assertEquals("528680.0889", yz, String.format("yz：%s", yz));
-        assertEquals("3404079.3582", x, String.format("x：%s", x));
-        assertEquals("28680.0889", y, String.format("y：%s", y));
+        assertEquals("3404079.3582", xz, String.format("xz：%f", xy[0]));
+        assertEquals("528680.0889", yz, String.format("yz：%f", xy[1]));
+        assertEquals("3404079.3582", x, String.format("x：%f", xy[2]));
+        assertEquals("28680.0889", y, String.format("y：%f", xy[3]));
     }
 
     @Test
@@ -33,7 +33,7 @@ class GaussKrugerProjectionCoordinateSystemTest {
         double[] lb = system.backwardCalculation(x, y, precision, hasFalse);
         String L = String.format("%.16f", lb[0]);
         String B = String.format("%.16f", lb[1]);
-        assertEquals("1.9425435045825241", L, String.format("L：%s", L));
-        assertEquals("0.5368120937090425", B, String.format("B：%s", B));
+        assertEquals("1.9425435045825241", L, String.format("L：%f", lb[0]));
+        assertEquals("0.5368120937090425", B, String.format("B：%f", lb[1]));
     }
 }

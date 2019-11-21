@@ -21,10 +21,10 @@ class GeodeticCoordinateSystemTest {
         String B = String.format("%.16f", LBHC[1]);
         String H = String.format("%.4f", LBHC[2]);
         int C = (int) LBHC[3];
-        assertEquals("0.7853981633974484", L, String.format("L：%s", L));
-        assertEquals("0.7853981633974484", B, String.format("B：%s", B));
-        assertEquals("999999.9987", H, String.format("H：%s", H));
-        assertEquals(6, C, String.format("count：%d", C));
+        assertEquals("0.7853981633974484", L, String.format("L：%f", LBHC[0]));
+        assertEquals("0.7853981633974484", B, String.format("B：%f", LBHC[1]));
+        assertEquals("999999.9987", H, String.format("H：%f", LBHC[2]));
+        assertEquals(6, C, String.format("count：%f", LBHC[3]));
     }
 
     @Test
@@ -36,9 +36,9 @@ class GeodeticCoordinateSystemTest {
         String X = String.format("%.8f", XYZ[0]);
         String Y = String.format("%.8f", XYZ[1]);
         String Z = String.format("%.8f", XYZ[2]);
-        assertEquals("3694419.14443691", X, String.format("X：%s", X));
-        assertEquals("3694419.14443691", Y, String.format("Y：%s", Y));
-        assertEquals("5194455.18902173", Z, String.format("Z：%s", Z));
+        assertEquals("3694419.14443691", X, String.format("X：%f", XYZ[0]));
+        assertEquals("3694419.14443691", Y, String.format("Y：%f", XYZ[1]));
+        assertEquals("5194455.18902173", Z, String.format("Z：%f", XYZ[2]));
     }
 
     @Test
@@ -51,24 +51,24 @@ class GeodeticCoordinateSystemTest {
         String L2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBA[0]));
         String B2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBA[1]));
         String A2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBA[2]));
-        assertEquals("51°16'32.4976\"", L2, String.format("L2：%s", L2));
-        assertEquals("-37°43'44.1353\"", B2, String.format("B2：%s", B2));
-        assertEquals("50°21'22.4896\"", A2, String.format("A2：%s", A2));
+        assertEquals("51°16'32.4976\"", L2, String.format("L2：%f", LBA[0]));
+        assertEquals("-37°43'44.1353\"", B2, String.format("B2：%f", LBA[1]));
+        assertEquals("50°21'22.4896\"", A2, String.format("A2：%f", LBA[2]));
     }
 
     @Test
     void inverseSolutionOfGeodeticProblem() {
-        double L1 = CalculationTools.degree2Rad(114 + 20 / 60.0 + 0 / 3600.0);
-        double B1 = CalculationTools.degree2Rad(30 + 30 / 60.0 + 0 / 3600.0);
-        double L2 = CalculationTools.degree2Rad(51 + 16 / 60.0 + 32.5 / 3600.0);
-        double B2 = CalculationTools.degree2Rad(-(37 + 43 / 60.0 + 44.1351 / 3600.0));
+        double L1 = CalculationTools.degree2Rad(35 + 49 / 60.0 + 36.3300 / 3600.0);
+        double B1 = CalculationTools.degree2Rad(47 + 46 / 60.0 + 52.6470 / 3600.0);
+        double L2 = CalculationTools.degree2Rad(36 + 14 / 60.0 + 45.0505 / 3600.0);
+        double B2 = CalculationTools.degree2Rad(48 + 04 / 60.0 + 09.6384 / 3600.0);
         double precision = 0.000000000000000001;
         double[] AAS = Beijing54.inverseSolutionOfGeodeticProblem(L1, B1, L2, B2, precision);
         String A1 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(AAS[0]));
         String A2 = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(AAS[1]));
         String S = String.format("%.4f", AAS[2]);
-        assertEquals("224°59'59.9989\"", A1, String.format("A1：%s", A1));
-        assertEquals("50°21'22.4881\"", A2, String.format("A2：%s", A2));
-        assertEquals("9999999.9535", S, S);
+        assertEquals("44°12'13.6681\"", A1, String.format("A1：%f", AAS[0]));
+        assertEquals("224°30'53.5549\"", A2, String.format("A2：%f", AAS[1]));
+        assertEquals("44797.2832", S, String.format("S：%f", AAS[2]));
     }
 }
