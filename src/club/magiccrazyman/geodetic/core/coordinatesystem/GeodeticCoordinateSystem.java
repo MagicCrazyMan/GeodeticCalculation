@@ -353,7 +353,9 @@ public class GeodeticCoordinateSystem {
 
         //计算反方位角
         A2 = Math.atan(cosu1 * Math.sin(lambda) / (b1 * Math.cos(lambda) - b2));
-        A2 += CalculationTools.degree2Rad(180);
+        if(A1 < CalculationTools.degree2Rad(180)){
+            A2 += CalculationTools.degree2Rad(180);
+        }
         return new double[]{A1, A2, S};
     }
 
