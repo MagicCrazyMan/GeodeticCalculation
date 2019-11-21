@@ -876,8 +876,8 @@ public class UserInterfaceController {
             double[] values = geodeticSystem.directSolutionOfGeodeticProblem(L, B, A, S);
 
             longitudeTextField3.setText(String.valueOf(values[0]));
-            latitudeTextField3.setText(String.valueOf(values[0]));
-            angleTextField3.setText(String.valueOf(values[0]));
+            latitudeTextField3.setText(String.valueOf(values[1]));
+            angleTextField3.setText(String.valueOf(values[2]));
 
             String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[0])));
             longitudeDegreeTextField3.setText(str[0]);
@@ -985,8 +985,8 @@ public class UserInterfaceController {
 
             double[] values = geodeticSystem.inverseSolutionOfGeodeticProblem(L1, B1, L2, B2, precision);
 
-            angleTextField2.setText(String.format("%.4f", values[0]));
-            angleTextField3.setText(String.format("%.4f", values[1]));
+            angleTextField2.setText(String.format("%.16f", values[0]));
+            angleTextField3.setText(String.format("%.16f", values[1]));
             geodeticLineTextField.setText(String.format("%.4f", values[2]));
 
             String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[0])));
