@@ -104,7 +104,7 @@ public class GaussKrugerProjectionCoordinateSystem {
      *
      * @param L 大地经度，单位：弧度
      * @param B 大地纬度，单位：弧度
-     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，顺序排列的ArrayList
+     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，l(经差)，S(中央子午线弧长)，N(卯酉圈曲率半径)顺序排列的ArrayList
      */
     public ArrayList<Double> forwardCalculation(double L, double B) {
         ArrayList<Double> list = new ArrayList<>();
@@ -136,7 +136,9 @@ public class GaussKrugerProjectionCoordinateSystem {
         list.add(yz);
         list.add(x);
         list.add(y);
-        list.add(xz);
+        list.add(l);
+        list.add(X);
+        list.add(N);
         return list;
     }
 
@@ -149,7 +151,7 @@ public class GaussKrugerProjectionCoordinateSystem {
      * @param y         Y轴坐标值，单位：米
      * @param precision 大地纬度迭代精度，单位：弧度
      * @param hasFalse  坐标值是否含有伪偏移值，此偏移值包含带号
-     * @return 以L(大地经度)，B(大地纬度)，l(经差)，count(迭代总次数)，...(Bf每次迭代值)顺序排列ArrayList
+     * @return 以L(大地经度)，B(大地纬度)，l(经差)，Mf(子午圈曲率半径)，Nf(卯酉圈曲率半径)，count(迭代总次数)，...(Bf每次迭代值)顺序排列ArrayList
      */
     public ArrayList<Double> backwardCalculation(double x, double y, double precision, boolean hasFalse) {
         ArrayList<Double> list = new ArrayList<>();
@@ -186,6 +188,8 @@ public class GaussKrugerProjectionCoordinateSystem {
         list.add(L);
         list.add(B);
         list.add(l);
+        list.add(Mf);
+        list.add(Nf);
         list.add((double) Bi.size() - 1); //Bi第一个值为初值，不算在迭代次数中
         list.addAll(Bi);
         return list;
