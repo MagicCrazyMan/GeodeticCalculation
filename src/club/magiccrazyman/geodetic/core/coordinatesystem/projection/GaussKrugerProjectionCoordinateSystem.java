@@ -137,6 +137,10 @@ public class GaussKrugerProjectionCoordinateSystem {
                 N * Math.pow(Math.cos(B), 3) * (1 - Math.pow(t, 2) + eit2) * Math.pow(l, 3) / 6 +
                 N * Math.pow(Math.cos(B), 5) * (5 - 18 * Math.pow(t, 2) + Math.pow(t, 4) + 14 * eit2 - 58 * eit2 * Math.pow(t, 2)) * Math.pow(l, 5) / 120;
 
+        //计算缩放因子
+        x *= scaleFactor;
+        y *= scaleFactor;
+
         //添加东伪偏移和北伪偏移，如果需要添加带号，此处会把带号一并带上
         yz = y + falseEasting;
         xz = x + falseNorthing;
@@ -167,10 +171,15 @@ public class GaussKrugerProjectionCoordinateSystem {
         int count;
         double[] BfC;
         double Bf, Mf, Nf, eit2f, tf, l, L, B;
-        if (hasFalse) { //修正伪偏移值
+        //修正伪偏移值
+        if (hasFalse) {
             y = y - falseEasting;
             x = x - falseNorthing;
         }
+
+        //复位缩放因子
+        y /= scaleFactor;
+        x /= scaleFactor;
 
         logger.logOutputResultIntroduction();
 
@@ -361,7 +370,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：CGCS2000
          * <br>
-         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         CGCS2000_3_Degree_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.CGCS2000.getSystem(),
                 3,
@@ -377,7 +386,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：CGCS2000
          * <br>
-         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         CGCS2000_3_Degree_GK_Zone_37(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.CGCS2000.getSystem(),
                 3,
@@ -393,7 +402,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：CGCS2000
          * <br>
-         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         CGCS2000_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.CGCS2000.getSystem(),
                 6,
@@ -409,7 +418,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：CGCS2000
          * <br>
-         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         CGCS2000_GK_Zone_19(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.CGCS2000.getSystem(),
                 6,
@@ -425,7 +434,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Xian_1980
          * <br>
-         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Xian_1980_3_Degree_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Xian_1980.getSystem(),
                 3,
@@ -441,7 +450,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Xian_1980
          * <br>
-         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Xian_1980_3_Degree_GK_Zone_37(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Xian_1980.getSystem(),
                 3,
@@ -457,7 +466,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Xian_1980
          * <br>
-         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Xian_1980_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Xian_1980.getSystem(),
                 6,
@@ -473,7 +482,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Xian_1980
          * <br>
-         * 高斯投影坐标系：6度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Xian_1980_GK_Zone_19(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Xian_1980.getSystem(),
                 6,
@@ -489,7 +498,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Beijing_1954
          * <br>
-         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Beijing_1954_3_Degree_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
                 3,
@@ -505,7 +514,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Beijing_1954
          * <br>
-         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Beijing_1954_3_Degree_GK_Zone_37(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
                 3,
@@ -521,7 +530,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Beijing_1954
          * <br>
-         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Beijing_1954_GK_Zone_19N(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
                 6,
@@ -537,7 +546,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Beijing_1954
          * <br>
-         * 高斯投影坐标系：6度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Beijing_1954_GK_Zone_19(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
                 6,
@@ -551,65 +560,17 @@ public class GaussKrugerProjectionCoordinateSystem {
                 "Beijing_1954_GK_Zone_19")),
 
         /**
-         * 大地坐标系：WGS84
+         * 大地坐标系：WGS 1984
          * <br>
-         * 高斯投影坐标系：3度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：0.996；纬度起点：0.0；线性单位：Meter(1.0)
          */
-        WGS_1984_3_Degree_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.WGS_1984.getSystem(),
-                3,
-                false,
+        WGS_1984_UTM_Zone_49N(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.WGS_1984.getSystem(),
+                6,
+                true,
                 500000.0,
                 0.0,
                 111.0,
-                1.0,
-                0.0,
-                "Meter (1.0)",
-                "WGS_1984_3_Degree_GK_CM_111E")),
-
-        /**
-         * 大地坐标系：WGS84
-         * <br>
-         * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
-         */
-        WGS_1984_3_Degree_GK_Zone_37(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.WGS_1984.getSystem(),
-                3,
-                true,
-                37500000.0,
-                0.0,
-                111.0,
-                1.0,
-                0.0,
-                "Meter (1.0)",
-                "WGS_1984_3_Degree_GK_Zone_37")),
-
-        /**
-         * 大地坐标系：WGS84
-         * <br>
-         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
-         */
-        WGS_1984_GK_CM_111E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.WGS_1984.getSystem(),
-                6,
-                false,
-                500000.0,
-                0.0,
-                111.0,
-                1.0,
-                0.0,
-                "Meter (1.0)",
-                "WGS_1984_GK_CM_111E")),
-
-        /**
-         * 大地坐标系：WGS84
-         * <br>
-         * 高斯投影坐标系：6度带；添加带号；111°E中央子午线；东伪偏移500000.0米；被伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
-         */
-        WGS_1984_GK_Zone_19(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.WGS_1984.getSystem(),
-                6,
-                true,
-                19500000,
-                0.0,
-                111.0,
-                1.0,
+                0.996,
                 0.0,
                 "Meter (1.0)",
                 "WGS_1984_GK_Zone_19"));
