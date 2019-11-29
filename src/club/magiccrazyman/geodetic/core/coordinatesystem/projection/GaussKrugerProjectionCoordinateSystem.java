@@ -209,39 +209,6 @@ public class GaussKrugerProjectionCoordinateSystem {
         return new double[]{L, B, count};
     }
 
-
-    /**
-     * 为Y轴真坐标值添加带号
-     * <br>
-     * 已废弃，请勿使用。现Y偏移坐标值计算已经一并添加至坐标系的东伪偏移值中
-     *
-     * @param L 大地经度
-     * @param Y Y轴偏移坐标值
-     * @return Y轴偏移坐标值
-     */
-    @Deprecated
-    private double addZoneNum(double L, double Y) {
-        int zone = 0;
-        if (degree == 6) {
-            int z = ((int) CalculationTools.rad2Degree(L) / 6) + 1;
-            double L0 = z * 6.0 - 3; //最靠近经度L的，位于L西侧的中央子午线 = (L / 6)取整 * 6 - 3
-            if (Math.abs(L - L0) < 3.0) { // L - L0 若小于 3.0，证明坐标点在当前分度带，反则就在前一个分度带
-                zone = z;
-            } else {
-                zone = z - 1;
-            }
-        } else if (degree == 3) { //同上
-            int z = ((int) CalculationTools.rad2Degree(L) / 3) + 1;
-            double L0 = z * 3;
-            if (Math.abs(L - L0) < 1.5) {
-                zone = z;
-            } else {
-                zone = z - 1;
-            }
-        }
-        return Double.parseDouble(String.valueOf(zone) + Y);
-    }
-
     /**
      * 获取此投影坐标系使用的大地坐标系
      *
