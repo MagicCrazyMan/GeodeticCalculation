@@ -17,6 +17,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.util.ArrayList;
 import java.util.logging.*;
 
 import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
@@ -30,6 +31,85 @@ import static javafx.scene.layout.Region.USE_COMPUTED_SIZE;
  * @version 0.1.0
  */
 public class UserInterfaceController {
+
+
+    public static final String geodeticCoordinateSystemIntroduction = "大地坐标系：%s" + System.lineSeparator() +
+            "   椭圆长半轴：%.4f 米" + System.lineSeparator() +
+            "   椭圆短半轴：%.4f 米" + System.lineSeparator() +
+            "   椭圆扁率：1/%.8f" + System.lineSeparator() +
+            "   椭圆第一偏心率：%.15f" + System.lineSeparator() +
+            "   椭圆第二偏心率：%.15f" + System.lineSeparator() +
+            "   椭圆极点处的子午线曲率半径：%.4f 米" + System.lineSeparator();
+
+    public static final String toGeoInputParametersIntroduction = "输入参数" + System.lineSeparator() +
+            "   X轴坐标值：%.10f 米" + System.lineSeparator() +
+            "   Y轴坐标值：%.10f 米" + System.lineSeparator() +
+            "   Z轴坐标值：%.10f 米" + System.lineSeparator() +
+            "   迭代经度：%s 弧度" + System.lineSeparator();
+
+    public static final String toSpaInputParametersIntroduction = "输入参数" + System.lineSeparator() +
+            "   大地经度L：%.10f 弧度" + System.lineSeparator() +
+            "   大地纬度B：%.10f 弧度" + System.lineSeparator() +
+            "   大地高H：%.10f  米" + System.lineSeparator();
+
+    public static final String outputResultIntroduction = "计算结果" + System.lineSeparator();
+
+    public static final String geodeticLongitudeResult = "   大地经度L：%.10f 弧度" + System.lineSeparator();
+
+    public static final String geodeticLatitudeResult = "   大地纬度B：%.10f 弧度" + System.lineSeparator() +
+            "       总迭代次数 %d" + System.lineSeparator();
+
+    public static final String geodeticHeightResult = "   大地高 H：%.10f 米" + System.lineSeparator();
+
+    public static final String geodeticIterationStart = "   迭代法，从空间直角坐标系推算大地纬度B" + System.lineSeparator() +
+            "       迭代初始值：%.15f 弧度" + System.lineSeparator();
+
+    public static final String geodeticLatitudeIterationCount = "       迭代 %d 次 B 值：%.15f 弧度" + System.lineSeparator();
+
+    public static final String spatialXResult = "  X轴坐标值：%.10f 米" + System.lineSeparator();
+
+    public static final String spatialYResult = "  Y轴坐标值：%.10f 米" + System.lineSeparator();
+
+    public static final String spatialZResult = "  Z轴坐标值：%.10f 米" + System.lineSeparator();
+
+    public static final String gaussProjectionCoordinateSystemIntroduction = "高斯投影坐标系：%s" + System.lineSeparator() +
+            "   分度带：%d °" + System.lineSeparator() +
+            "   中央子午线：%.1f 米" + System.lineSeparator() +
+            "   东伪偏移值：%.1f 米" + System.lineSeparator() +
+            "   北伪偏移值：%.1f 米" + System.lineSeparator() +
+            "   缩放因子：%.1f" + System.lineSeparator() +
+            "   纬度原点：%.1f" + System.lineSeparator() +
+            "   线性单位：%s" + System.lineSeparator();
+
+    public static final String gaussProjectionForwardInputParameters = "输入参数" + System.lineSeparator() +
+            "   大地经度L：%.10f 弧度" + System.lineSeparator() +
+            "   大地纬度B：%.10f 弧度" + System.lineSeparator();
+
+    public static final String gaussProjectionBackwardInputParameters = "输入参数" + System.lineSeparator() +
+            "   X轴坐标值：%.10f 米" + System.lineSeparator() +
+            "   Y轴坐标值：%.10f 米" + System.lineSeparator() +
+            "   是否有偏移量：%s" + System.lineSeparator() +
+            "   迭代精度：%s 弧度" + System.lineSeparator();
+
+    public static final String gaussProjectionForwardResult = "   经差：%.4f 弧度" + System.lineSeparator() +
+            "   中央子午线弧长：%.4f 米" + System.lineSeparator() +
+            "   卯酉圈曲率半径：%.4f 弧度" + System.lineSeparator() +
+            "   X轴真坐标值：%.4f 弧度" + System.lineSeparator() +
+            "   Y轴真坐标值：%.4f 弧度" + System.lineSeparator() +
+            "   X轴偏移坐标值：%.4f 弧度" + System.lineSeparator() +
+            "   Y轴偏移坐标值：%.4f 弧度" + System.lineSeparator();
+
+    public static final String gaussProjectionIterationStart = "   迭代法，子午线弧长计算大地纬度Bf" + System.lineSeparator() +
+            "       迭代初始值：%.15f 弧度" + System.lineSeparator();
+
+    public static final String gaussProjectionLatitudeIterationCount = "       迭代 %d 次 Bf 值：%.15f 弧度" + System.lineSeparator();
+
+    public static final String gaussProjectionBackwardResult = "   子午圈曲率半径：%.4f 米" + System.lineSeparator() +
+            "   卯酉圈曲率半径：%.4f 米" + System.lineSeparator() +
+            "   大地纬度B：%.4f 弧度" + System.lineSeparator() +
+            "       迭代次数：%d" + System.lineSeparator() +
+            "   大地经度L：%.4f 弧度" + System.lineSeparator() +
+            "       经差l：%.4f 弧度" + System.lineSeparator();
 
     @FXML
     public RadioButton showCalculation;
@@ -156,13 +236,13 @@ public class UserInterfaceController {
 
     private Stage stage;
     private AnchorPane processPane;
+    private TextArea processTextArea;
 
     private Handler handler = new Handler() {
         @Override
         public void publish(LogRecord record) {
             if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.appendText(record.getMessage());
+                processTextArea.appendText(record.getMessage());
             }
         }
 
@@ -181,7 +261,6 @@ public class UserInterfaceController {
         @Override
         public void changed(ObservableValue observable, Object oldValue, Object newValue) {
             geodeticSystem = (GeodeticCoordinateSystem) newValue;
-            setHandlerForSimpleLogger(geodeticSystem.getLogger());
         }
     };
 
@@ -190,8 +269,6 @@ public class UserInterfaceController {
         @Override
         public void changed(ObservableValue observable, Object oldValue, Object newValue) {
             projectionSystem = (GaussKrugerProjectionCoordinateSystem) newValue;
-            setHandlerForSimpleLogger(projectionSystem.getLogger());
-            setHandlerForSimpleLogger(projectionSystem.getGeodeticCoordinateSystem().getLogger());
             indexTextField.setText(String.valueOf(projectionSystem.getDegree()));
             centralMeridianTextField.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
         }
@@ -266,7 +343,6 @@ public class UserInterfaceController {
         //默认选择第一项
         systemComboBox.getSelectionModel().select(0);
         geodeticSystem = (GeodeticCoordinateSystem) systemComboBox.getSelectionModel().getSelectedItem();
-        setHandlerForSimpleLogger(geodeticSystem.getLogger());
 
         //设置选择项修改Listener
         systemComboBox.getSelectionModel().selectedItemProperty().addListener(geodeticListener);
@@ -300,28 +376,11 @@ public class UserInterfaceController {
         //默认选择第一项
         systemComboBox.getSelectionModel().select(0);
         projectionSystem = (GaussKrugerProjectionCoordinateSystem) systemComboBox.getSelectionModel().getSelectedItem();
-        setHandlerForSimpleLogger(projectionSystem.getLogger());
-        setHandlerForSimpleLogger(projectionSystem.getGeodeticCoordinateSystem().getLogger());
         indexTextField.setText(String.valueOf(projectionSystem.getDegree()));
         centralMeridianTextField.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
 
         //设置选择项修改Listener
         systemComboBox.getSelectionModel().selectedItemProperty().addListener(projectionListener);
-    }
-
-    private void setHandlerForSimpleLogger(SimpleLogger logger) {
-        for (Handler handler : logger.getHandlers()) {
-            if (handler.equals(handler)) {
-                return;
-            }
-        }
-        handler.setLevel(Level.INFO);
-        for (Handler h : logger.getHandlers()) {
-            if (h.equals(handler)) {
-                return;
-            }
-        }
-        logger.addHandler(handler);
     }
 
     private void setDegreeTextField(String longitude, String latitude, int tabNum) {
@@ -415,7 +474,7 @@ public class UserInterfaceController {
             geodeticLineTextField.clear();
         }
         if (processPane != null) {
-            ((TextArea) processPane.getChildren().get(0)).clear();
+            processTextArea.clear();
         }
     }
 
@@ -427,27 +486,35 @@ public class UserInterfaceController {
      */
     public void spatial2GeoButtonActionPerformed(ActionEvent actionEvent) {
         try {
-            if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.clear();
-            }
-
             double X, Y, Z, precision;
             X = Double.parseDouble(axisXTextField.getText());
             Y = Double.parseDouble(axisYTextField.getText());
             Z = Double.parseDouble(axisZTextField.getText());
             precision = Double.parseDouble(precisionTextField.getText());
 
-            double[] LBHC = geodeticSystem.transformToGeodeticCoordinateSystem(X, Y, Z, precision);
+            ArrayList<Double> LBHC = geodeticSystem.transformToGeodeticCoordinateSystem(X, Y, Z, precision);
 
-            longitudeTextField.setText(String.valueOf(LBHC[0]));
-            latitudeTextField.setText(String.valueOf(LBHC[1]));
-            heightTextField.setText(String.format("%.4f", LBHC[2]));
+            longitudeTextField.setText(String.valueOf(LBHC.get(0)));
+            latitudeTextField.setText(String.valueOf(LBHC.get(1)));
+            heightTextField.setText(String.format("%.4f", LBHC.get(2)));
 
-            String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBHC[0]));
-            String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBHC[1]));
+            String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBHC.get(0)));
+            String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBHC.get(1)));
             setDegreeTextField(longitude, latitude, 0);
 
+            if (processPane != null) {
+                processTextArea.clear();
+                processTextArea.appendText(String.format(geodeticCoordinateSystemIntroduction, geodeticSystem.getName(), geodeticSystem.getA(), geodeticSystem.getB(), 1 / geodeticSystem.getAlpha(), geodeticSystem.getE2(), geodeticSystem.getDE2(), geodeticSystem.getC()));
+                processTextArea.appendText(String.format(toGeoInputParametersIntroduction, X, Y, Z, precisionTextField.getText()));
+                processTextArea.appendText(outputResultIntroduction);
+                processTextArea.appendText(String.format(geodeticIterationStart, LBHC.get(4)));
+                for (int i = 5, j = 1; i < LBHC.size(); i++, j++) {
+                    processTextArea.appendText(String.format(geodeticLatitudeIterationCount, j, LBHC.get(i)));
+                }
+                processTextArea.appendText(String.format(geodeticLongitudeResult, LBHC.get(0)));
+                processTextArea.appendText(String.format(geodeticLatitudeResult, LBHC.get(1), (int) (double) LBHC.get(3)));
+                processTextArea.appendText(String.format(geodeticHeightResult, LBHC.get(2)));
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -460,10 +527,6 @@ public class UserInterfaceController {
      */
     public void geo2SpatialButtonActionPerformed(ActionEvent actionEvent) {
         try {
-            if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.clear();
-            }
 
             double L, B, H;
             if (geodeticInputMode == 0) {
@@ -500,11 +563,21 @@ public class UserInterfaceController {
                 longitudeTextField.setText(String.valueOf(L));
                 latitudeTextField.setText(String.valueOf(B));
             }
-            double[] XYZ = geodeticSystem.transformToSpatialCoordinateSystem(L, B, H);
+            ArrayList<Double> XYZ = geodeticSystem.transformToSpatialCoordinateSystem(L, B, H);
 
-            axisXTextField.setText(String.format("%.8f", XYZ[0]));
-            axisYTextField.setText(String.format("%.8f", XYZ[1]));
-            axisZTextField.setText(String.format("%.8f", XYZ[2]));
+            axisXTextField.setText(String.format("%.8f", XYZ.get(0)));
+            axisYTextField.setText(String.format("%.8f", XYZ.get(1)));
+            axisZTextField.setText(String.format("%.8f", XYZ.get(2)));
+
+            if (processPane != null) {
+                processTextArea.clear();
+                processTextArea.appendText(String.format(geodeticCoordinateSystemIntroduction, geodeticSystem.getName(), geodeticSystem.getA(), geodeticSystem.getB(), 1 / geodeticSystem.getAlpha(), geodeticSystem.getE2(), geodeticSystem.getDE2(), geodeticSystem.getC()));
+                processTextArea.appendText(String.format(toSpaInputParametersIntroduction, L, B, H));
+                processTextArea.appendText(outputResultIntroduction);
+                processTextArea.appendText(String.format(spatialXResult, XYZ.get(0)));
+                processTextArea.appendText(String.format(spatialYResult, XYZ.get(1)));
+                processTextArea.appendText(String.format(spatialZResult, XYZ.get(2)));
+            }
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -642,14 +715,14 @@ public class UserInterfaceController {
             //根据窗口尺寸创建一个AnchorPane并放置一个TextArea，每次都创建一个新的
             double width = 370;
             double height = stage.getScene().getHeight() - 20; //剪掉留白
-            TextArea processText = new TextArea();
-            processText.setPrefHeight(height);
-            processText.setPrefWidth(width);
-            processText.setWrapText(true); //自动换行
+            processTextArea = new TextArea();
+            processTextArea.setPrefHeight(height);
+            processTextArea.setPrefWidth(width);
+            processTextArea.setWrapText(true); //自动换行
             processPane = new AnchorPane();
             processPane.setPrefHeight(height);
             processPane.setPrefWidth(width);
-            processPane.getChildren().add(processText);
+            processPane.getChildren().add(processTextArea);
 
             //添加两个Column装processPane和10px的WhiteSpace
             ObservableList<ColumnConstraints> columnConstraints = rootPane.getColumnConstraints();
@@ -686,43 +759,53 @@ public class UserInterfaceController {
 
     public void proj2GeoButtonActionPerformed(ActionEvent actionEvent) {
         try {
-            if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.clear();
-            }
-
             double X, Y, precision;
-            double[] LB;
+            boolean hasFalse;
+            ArrayList<Double> LBlffC;
 
             precision = Double.parseDouble(precisionTextField1.getText());
 
             if (trueOrFalse == 0) {
                 X = Double.parseDouble(projectionAxisXTextField1.getText());
                 Y = Double.parseDouble(projectionAxisYTextField1.getText());
-                LB = projectionSystem.backwardCalculation(X, Y, precision, true);
+                hasFalse = true;
+                LBlffC = projectionSystem.backwardCalculation(X, Y, precision, hasFalse);
             } else {
                 X = Double.parseDouble(projectionAxisXTextField2.getText());
                 Y = Double.parseDouble(projectionAxisYTextField2.getText());
-                LB = projectionSystem.backwardCalculation(X, Y, precision, false);
+                hasFalse = false;
+                LBlffC = projectionSystem.backwardCalculation(X, Y, precision, hasFalse);
             }
 
-            longitudeTextField1.setText(String.valueOf(LB[0]));
-            latitudeTextField1.setText(String.valueOf(LB[1]));
+            longitudeTextField1.setText(String.valueOf(LBlffC.get(0)));
+            latitudeTextField1.setText(String.valueOf(LBlffC.get(1)));
 
-            String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LB[0]));
-            String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LB[1]));
+            String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlffC.get(0)));
+            String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlffC.get(1)));
             setDegreeTextField(longitude, latitude, 1);
 
-            if (LB[0] > 0) {
+            if (LBlffC.get(0) > 0) {
                 EorW.getSelectionModel().select(0);
             } else {
                 EorW.getSelectionModel().select(1);
             }
 
-            if (LB[1] > 0) {
+            if (LBlffC.get(1) > 0) {
                 NorS.getSelectionModel().select(0);
             } else {
                 NorS.getSelectionModel().select(1);
+            }
+
+            if (processPane != null) {
+                processTextArea.clear();
+                processTextArea.appendText(String.format(gaussProjectionCoordinateSystemIntroduction, projectionSystem.getName(), projectionSystem.getDegree(), projectionSystem.getCentralMeridian(), projectionSystem.getFalseEasting(), projectionSystem.getFalseNorthing(), projectionSystem.getScaleFactor(), projectionSystem.getLatitudeOfOrigin(), projectionSystem.getLinerUnit()));
+                processTextArea.appendText(String.format(gaussProjectionBackwardInputParameters, X, Y, hasFalse ? "有" : "无", precision));
+                processTextArea.appendText(outputResultIntroduction);
+                processTextArea.appendText(String.format(gaussProjectionIterationStart, LBlffC.get(6)));
+                for (int i = 7, j = 1; i < LBlffC.size(); i++, j++) {
+                    processTextArea.appendText(String.format(gaussProjectionLatitudeIterationCount, j, LBlffC.get(i)));
+                }
+                processTextArea.appendText(String.format(gaussProjectionBackwardResult, LBlffC.get(3), LBlffC.get(4), LBlffC.get(1), (int) (double) LBlffC.get(5), LBlffC.get(0), LBlffC.get(2)));
             }
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -731,11 +814,6 @@ public class UserInterfaceController {
 
     public void geo2ProjButtonActionPerformed(ActionEvent actionEvent) {
         try {
-            if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.clear();
-            }
-
             double L, B;
             if (geodeticInputMode1 == 0) {
                 L = Double.parseDouble(longitudeTextField1.getText());
@@ -780,11 +858,19 @@ public class UserInterfaceController {
                 NorS.getSelectionModel().select(1);
             }
 
-            double[] values = projectionSystem.forwardCalculation(L, B);
-            projectionAxisXTextField1.setText(String.format("%.4f", values[0]));
-            projectionAxisYTextField1.setText(String.format("%.4f", values[1]));
-            projectionAxisXTextField2.setText(String.format("%.4f", values[2]));
-            projectionAxisYTextField2.setText(String.format("%.4f", values[3]));
+            ArrayList<Double> values = projectionSystem.forwardCalculation(L, B);
+            projectionAxisXTextField1.setText(String.format("%.4f", values.get(0)));
+            projectionAxisYTextField1.setText(String.format("%.4f", values.get(1)));
+            projectionAxisXTextField2.setText(String.format("%.4f", values.get(2)));
+            projectionAxisYTextField2.setText(String.format("%.4f", values.get(3)));
+
+            if (processPane != null) {
+                processTextArea.clear();
+                processTextArea.appendText(String.format(gaussProjectionCoordinateSystemIntroduction, projectionSystem.getName(), projectionSystem.getDegree(), projectionSystem.getCentralMeridian(), projectionSystem.getFalseEasting(), projectionSystem.getFalseNorthing(), projectionSystem.getScaleFactor(), projectionSystem.getLatitudeOfOrigin(), projectionSystem.getLinerUnit()));
+                processTextArea.appendText(String.format(gaussProjectionForwardInputParameters, L, B));
+                processTextArea.appendText(outputResultIntroduction);
+                processTextArea.appendText(String.format(gaussProjectionForwardResult, values.get(4), values.get(5), values.get(6), values.get(2), values.get(3), values.get(0), values.get(1)));
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -813,8 +899,7 @@ public class UserInterfaceController {
     public void directSolutionButtonClick(ActionEvent actionEvent) {
         try {
             if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.clear();
+                processTextArea.clear();
             }
 
             double L, B, A, S;
@@ -877,23 +962,23 @@ public class UserInterfaceController {
 
             S = Double.parseDouble(geodeticLineTextField.getText());
 
-            double[] values = geodeticSystem.directSolutionOfGeodeticProblem(L, B, A, S);
+            ArrayList<Double> values = geodeticSystem.directSolutionOfGeodeticProblem(L, B, A, S);
 
-            longitudeTextField3.setText(String.valueOf(values[0]));
-            latitudeTextField3.setText(String.valueOf(values[1]));
-            angleTextField3.setText(String.valueOf(values[2]));
+            longitudeTextField3.setText(String.valueOf(values.get(0)));
+            latitudeTextField3.setText(String.valueOf(values.get(1)));
+            angleTextField3.setText(String.valueOf(values.get(2)));
 
-            String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[0])));
+            String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(0))));
             longitudeDegreeTextField3.setText(str[0]);
             longitudeMinsTextField3.setText(str[1]);
             longitudeSecondsTextField3.setText(str[2]);
 
-            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[1])));
+            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(1))));
             latitudeDegreeTextField3.setText(str[0]);
             latitudeMinsTextField3.setText(str[1]);
             latitudeSecondsTextField3.setText(str[2]);
 
-            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[2])));
+            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(2))));
             angleDegreeTextField3.setText(str[0]);
             angleMinsTextField3.setText(str[1]);
             angleSecondsTextField3.setText(str[2]);
@@ -905,8 +990,7 @@ public class UserInterfaceController {
     public void inverseSolutionButtonClick(ActionEvent actionEvent) {
         try {
             if (processPane != null) {
-                TextArea area = (TextArea) processPane.getChildren().get(0);
-                area.clear();
+                processTextArea.clear();
             }
 
             double L1, B1, L2, B2;
@@ -932,7 +1016,7 @@ public class UserInterfaceController {
                 longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(L2));
                 latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(B2));
 
-               str = getSplitDegree(longitude);
+                str = getSplitDegree(longitude);
                 longitudeDegreeTextField3.setText(str[0]);
                 longitudeMinsTextField3.setText(str[1]);
                 longitudeSecondsTextField3.setText(str[2]);
@@ -987,18 +1071,18 @@ public class UserInterfaceController {
 
             double precision = Double.parseDouble(precisionTextField2.getText());
 
-            double[] values = geodeticSystem.inverseSolutionOfGeodeticProblem(L1, B1, L2, B2, precision);
+            ArrayList<Double> values = geodeticSystem.inverseSolutionOfGeodeticProblem(L1, B1, L2, B2, precision);
 
-            angleTextField2.setText(String.format("%.16f", values[0]));
-            angleTextField3.setText(String.format("%.16f", values[1]));
-            geodeticLineTextField.setText(String.format("%.4f", values[2]));
+            angleTextField2.setText(String.format("%.16f", values.get(0)));
+            angleTextField3.setText(String.format("%.16f", values.get(1)));
+            geodeticLineTextField.setText(String.format("%.4f", values.get(2)));
 
-            String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[0])));
+            String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(0))));
             angleDegreeTextField2.setText(str[0]);
             angleMinsTextField2.setText(str[1]);
             angleSecondsTextField2.setText(str[2]);
 
-            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values[1])));
+            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(1))));
             angleDegreeTextField3.setText(str[0]);
             angleMinsTextField3.setText(str[1]);
             angleSecondsTextField3.setText(str[2]);
