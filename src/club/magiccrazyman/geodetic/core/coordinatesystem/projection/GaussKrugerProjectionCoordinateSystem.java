@@ -210,6 +210,30 @@ public class GaussKrugerProjectionCoordinateSystem {
     }
 
     /**
+     * 间接法坐标系投影转换，领带转换操作
+     * <br>
+     * 源高斯投影坐标 -> 大地坐标 -> 目标高斯投影坐标
+     *
+     * @param outputSystem 目标坐标系
+     * @param x            x轴坐标值
+     * @param y            y轴坐标值
+     * @param precision    迭代精度
+     * @param hasFalse     坐标值是否含有伪偏移值，此偏移值包含带号
+     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，顺序排列的double类型数组
+     * @throws UnsupportedOperationException 当两个投影坐标系的大地坐标系不一致时抛出此异常
+     * @see GaussKrugerProjectionCoordinateSystem#forwardCalculation(double, double)
+     * @see GaussKrugerProjectionCoordinateSystem#backwardCalculation(double, double, double, boolean)
+     */
+    public double[] projectionTransform(GaussKrugerProjectionCoordinateSystem outputSystem, double x, double y, double precision, boolean hasFalse) throws UnsupportedOperationException {
+        if (!outputSystem.getGeodeticCoordinateSystem().equals(geodeticCoordinateSystem)) {
+            throw new UnsupportedOperationException("输入投影坐标系的大地坐标系与此投影坐标系的大地坐标系不符合");
+        } else {
+            double[] lb = backwardCalculation(x, y, precision, hasFalse);
+            return outputSystem.forwardCalculation(lb[0], lb[1]);
+        }
+    }
+
+    /**
      * 获取此投影坐标系使用的大地坐标系
      *
      * @return GeodeticCoordinateSystem 大地坐标系实例
