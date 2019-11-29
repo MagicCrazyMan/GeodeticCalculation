@@ -573,7 +573,7 @@ public class GaussKrugerProjectionCoordinateSystem {
                 0.9996,
                 0.0,
                 "Meter (1.0)",
-                "WGS_1984_GK_Zone_19"));
+                "WGS_1984_UTM_Zone_49N"));
 
         /**
          * 高斯考虑投影坐标系实例
