@@ -521,6 +521,38 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：Beijing_1954
          * <br>
+         * 高斯投影坐标系：3度带；不添加带号；117°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         */
+        Beijing_1954_3_Degree_GK_CM_117E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
+                3,
+                false,
+                500000.0,
+                0.0,
+                117.0,
+                1.0,
+                0.0,
+                "Meter (1.0)",
+                "Beijing_1954_3_Degree_GK_CM_117E")),
+
+        /**
+         * 大地坐标系：Beijing_1954
+         * <br>
+         * 高斯投影坐标系：3度带；不添加带号；120°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
+         */
+        Beijing_1954_3_Degree_GK_CM_120E(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
+                3,
+                false,
+                500000.0,
+                0.0,
+                120.0,
+                1.0,
+                0.0,
+                "Meter (1.0)",
+                "Beijing_1954_3_Degree_GK_CM_120E")),
+
+        /**
+         * 大地坐标系：Beijing_1954
+         * <br>
          * 高斯投影坐标系：3度带；添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：1.0；纬度起点：0.0；线性单位：Meter(1.0)
          */
         Beijing_1954_3_Degree_GK_Zone_37(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem(),
