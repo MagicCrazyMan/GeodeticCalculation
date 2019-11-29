@@ -38,15 +38,15 @@ class GaussKrugerProjectionCoordinateSystemTest {
         double y = 624430.6672;
         double precision = 0.0000000000001;
 
-        ArrayList<Double> lb = cgcs2000_3_111E.backwardCalculation(x, y, precision, true);
+        ArrayList<Double> LBlMNC = cgcs2000_3_111E.backwardCalculation(x, y, precision, true);
 
-        String L = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(lb.get(0)));
-        String B = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(lb.get(1)));
-        int count = (int) (double) lb.get(3);
+        String L = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlMNC.get(0)));
+        String B = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlMNC.get(1)));
+        int count = (int) (double) LBlMNC.get(5);
 
-        assertEquals("112°17'58.3596\"", L, String.format("L：%f", lb.get(0)));
-        assertEquals("30°45'25.4425\"", B, String.format("B：%f", lb.get(1)));
-        assertEquals(5, count, String.format("B：%f", lb.get(3)));
+        assertEquals("112°17'58.3596\"", L, String.format("L：%f", LBlMNC.get(0)));
+        assertEquals("30°45'25.4425\"", B, String.format("B：%f", LBlMNC.get(1)));
+        assertEquals(5, count, String.format("B：%f", LBlMNC.get(5)));
     }
 
     @Test
