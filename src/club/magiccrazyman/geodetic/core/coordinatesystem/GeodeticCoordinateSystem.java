@@ -353,7 +353,7 @@ public class GeodeticCoordinateSystem {
 
         //计算反方位角
         A2 = Math.atan(cosu1 * Math.sin(lambda) / (b1 * Math.cos(lambda) - b2));
-        if(A1 < CalculationTools.degree2Rad(180)){
+        if (A1 < CalculationTools.degree2Rad(180)) {
             A2 += CalculationTools.degree2Rad(180);
         }
         return new double[]{A1, A2, S};
@@ -585,6 +585,16 @@ public class GeodeticCoordinateSystem {
                 ", e2=" + e2 +
                 ", de2=" + de2 +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof GeodeticCoordinateSystem) {
+            GeodeticCoordinateSystem system = (GeodeticCoordinateSystem)obj;
+            return this.a == system.a && this.b == system.b;
+        } else {
+            return super.equals(obj);
+        }
     }
 
     /**
