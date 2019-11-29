@@ -1,9 +1,6 @@
 package club.magiccrazyman.geodetic.core.coordinatesystem;
 
-import club.magiccrazyman.geodetic.core.logger.SimpleLogger;
 import club.magiccrazyman.geodetic.core.tools.CalculationTools;
-
-import java.util.logging.Level;
 
 /**
  * 大地坐标系
@@ -22,36 +19,31 @@ public class GeodeticCoordinateSystem {
      * 椭圆长半轴
      */
     private final double a;
+
     /**
      * 椭圆短半轴
      */
     private final double b;
+
     /**
      * 极点处的子午线曲率半径
      */
     private final double c;
+
     /**
      * 椭圆第一偏心率
      */
     private final double e2;
+
     /**
      * 椭球第二偏心率
      */
     private final double de2;
+
     /**
      * 大地坐标系名称
      */
     private final String name;
-    /**
-     * 日志Logger
-     */
-    private SimpleLogger logger;
-
-    {
-        logger = SimpleLogger.getLogger(this.getClass().getName());
-        logger.setLevel(Level.INFO);
-        logger.setUseParentHandlers(false);
-    }
 
     /**
      * 大地坐标系构造器，通过输入椭圆长半轴a及短半轴b创建一个新的大地坐标系
@@ -82,10 +74,6 @@ public class GeodeticCoordinateSystem {
      * @return 以L(大地经度), B(大地纬度), H(大地高)，count(迭代总次数)顺序排列的double类型数组
      */
     public double[] transformToGeodeticCoordinateSystem(double X, double Y, double Z, double precision) {
-        logger.logGeodeticCoordinateSystemIntroduction(this);
-        logger.logToGeoInputParametersIntroduction(X, Y, Z, precision);
-        logger.logOutputResultIntroduction();
-
         double N, L, B, H;
         int count;
 
@@ -94,18 +82,15 @@ public class GeodeticCoordinateSystem {
         if (Y < 0) { //由于计算结果恒小于等于180度，故如果Y小于0，则需要取反
             L = -L;
         }
-        logger.logGeodeticLongitudeResult(L);
 
         //B迭代推算
         double[] tmp = calculateGeodeticLatitudeFromSpatialSystem(X, Y, Z, precision);
         B = tmp[0];
         count = (int) tmp[1];
-        logger.logGeodeticLatitudeResult(B, count);
 
         //H = Z / sinB - N * (1 -e^2)
         N = a / (Math.sqrt(1 - e2 * Math.pow(Math.sin(B), 2)));
         H = Z / Math.sin(B) - N * (1 - e2);
-        logger.logGeodeticHeightResult(H);
         return new double[]{L, B, H, count};
     }
 
@@ -123,7 +108,6 @@ public class GeodeticCoordinateSystem {
      */
     public double[] calculateGeodeticLatitudeFromSpatialSystem(double X, double Y, double Z, double precision) {
         double tanB1 = Z / Math.hypot(X, Y);
-        logger.logGeodeticIterationStart(Math.atan(tanB1));
         return this.calculateGeodeticLatitudeFromSpatialSystemIteration(X, Y, Z, precision, tanB1, 1);
     }
 
@@ -152,8 +136,6 @@ public class GeodeticCoordinateSystem {
         B1 = Math.atan(tanB1);
         B2 = Math.atan(tanB2);
 
-        logger.logGeodeticLatitudeIterationCount(B2, count);
-
         if (Math.abs(B1 - B2) <= precision) {
             //检验精度要求，达到精度要求便中止迭代并返回大地纬度B
             return new double[]{B2, count};
@@ -174,24 +156,17 @@ public class GeodeticCoordinateSystem {
      * @return 以X(X轴坐标值), Y(Y轴坐标值), Z(Z轴坐标值)顺序排列的double类型数组
      */
     public double[] transformToSpatialCoordinateSystem(double L, double B, double H) {
-        logger.logGeodeticCoordinateSystemIntroduction(this);
-        logger.logToSpaInputParametersIntroduction(L, B, H);
-        logger.logOutputResultIntroduction();
-
         double N, X, Y, Z;
 
         //X = (N + H) * cosB * cosL
         N = a / (Math.sqrt(1 - e2 * Math.pow(Math.sin(B), 2)));
         X = (N + H) * Math.cos(B) * Math.cos(L);
-        logger.logSpatialXResult(X);
 
         //Y = (N + H) * cosB * sinL
         Y = (N + H) * Math.cos(B) * Math.sin(L);
-        logger.logSpatialYResult(Y);
 
         //Z = (H * (1 - e^2) + H) * sinB
         Z = (N * (1 - e2) + H) * Math.sin(B);
-        logger.logSpatialZResult(Z);
 
         return new double[]{X, Y, Z};
     }
@@ -208,7 +183,6 @@ public class GeodeticCoordinateSystem {
      * @return 以L2(大地线终点的经度L2)，B2(大地线终点的纬度B2)，A2(大地线终点的大地方位角A2)顺序排序的double类型数组
      */
     public double[] directSolutionOfGeodeticProblem(double L1, double B1, double A1, double S) {
-        logger.simpleLog("日志系统升级中，大地主题解算暂不提供日志功能");
         double W1, sinu1, cosu1, sinA0, cosA0, cotO1, sin2O1, cos2O1, sin2O0, cos2O0, sigma0, sigma, k2, A, B, C, alpha, beta, delta, sinu2, B2, lambda, sinA1, tanlambda, L2, A2, tanA2;
         //计算起点的归化纬度归化纬度
         W1 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B1), 2));
@@ -286,7 +260,6 @@ public class GeodeticCoordinateSystem {
      * @return 以A1(起点大地方位角)，A2(终点大地方位角)，S(大地线)顺序排序的double类型数组
      */
     public double[] inverseSolutionOfGeodeticProblem(double L1, double B1, double L2, double B2, double precision) {
-        logger.simpleLog("日志系统升级中，大地主题解算暂不提供日志功能");
         double S, A1, A2, W1, W2, sinu1, sinu2, cosu1, cosu2, L, a1, a2, b1, b2, p, q, sinO, cosO, sigma, lambda, sinA0, cosA0_2, x, alpha, beta, delta1, delta2, y, k2, A, B, C, dB, dC;
         //计算两点的归化纬度
         W1 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B1), 2));
@@ -442,7 +415,6 @@ public class GeodeticCoordinateSystem {
     public double[] calculateGeodeticLatitudeFromMeridianArc(double X, double precision) {
         double[] parameters = calculateMeridianArcParameters();
         double start = X / parameters[0]; //迭代初始值 = X / parameters[0]
-        logger.logGaussProjectionIterationStart(start);
 
         return calculateGeodeticLatitudeFromMeridianArcIteration(parameters, start, X, precision, 1);
     }
@@ -461,7 +433,6 @@ public class GeodeticCoordinateSystem {
      */
     private double[] calculateGeodeticLatitudeFromMeridianArcIteration(double[] parameters, double B1, double X, double precision, int count) {
         double B2 = (X - (-1 * parameters[1] / 2 * Math.sin(2 * B1) + parameters[2] / 4 * Math.sin(4 * B1) - parameters[3] / 6 * Math.sin(6 * B1) + parameters[4] / 8 * Math.sin(8 * B1))) / parameters[0];
-        logger.logGaussProjectionIterationCount(B2, count);
         if (Math.abs(B2 - B1) <= precision) {
             return new double[]{B2, count};
         } else {
@@ -555,26 +526,6 @@ public class GeodeticCoordinateSystem {
         return name;
     }
 
-    /**
-     * 获取当前日志SimpleLogger实例
-     *
-     * @return Logger实例
-     * @see SimpleLogger
-     */
-    public SimpleLogger getLogger() {
-        return logger;
-    }
-
-    /**
-     * 设置日志SimpleLogger实例
-     *
-     * @param logger 日志SimpleLogger实例
-     * @see SimpleLogger
-     */
-    public void setLogger(SimpleLogger logger) {
-        this.logger = logger;
-    }
-
     @Override
     public String toString() {
         return "GeodeticCoordinateSystem{" +
@@ -590,7 +541,7 @@ public class GeodeticCoordinateSystem {
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof GeodeticCoordinateSystem) {
-            GeodeticCoordinateSystem system = (GeodeticCoordinateSystem)obj;
+            GeodeticCoordinateSystem system = (GeodeticCoordinateSystem) obj;
             return this.a == system.a && this.b == system.b;
         } else {
             return super.equals(obj);

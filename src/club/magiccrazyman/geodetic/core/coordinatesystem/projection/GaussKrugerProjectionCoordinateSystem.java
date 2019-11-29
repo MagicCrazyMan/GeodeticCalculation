@@ -1,10 +1,7 @@
 package club.magiccrazyman.geodetic.core.coordinatesystem.projection;
 
 import club.magiccrazyman.geodetic.core.coordinatesystem.GeodeticCoordinateSystem;
-import club.magiccrazyman.geodetic.core.logger.SimpleLogger;
 import club.magiccrazyman.geodetic.core.tools.CalculationTools;
-
-import java.util.logging.Level;
 
 /**
  * 高斯克吕格投影坐标系
@@ -72,17 +69,6 @@ public class GaussKrugerProjectionCoordinateSystem {
     private final GeodeticCoordinateSystem geodeticCoordinateSystem;
 
     /**
-     * 日志Logger
-     */
-    private SimpleLogger logger;
-
-    {
-        logger = SimpleLogger.getLogger(this.getClass().getName());
-        logger.setLevel(Level.INFO);
-        logger.setUseParentHandlers(false);
-    }
-
-    /**
      * 高斯克吕格投影坐标系构造器
      *
      * @param geodeticCoordinateSystem 大地坐标系
@@ -119,9 +105,6 @@ public class GaussKrugerProjectionCoordinateSystem {
      * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，顺序排列的double类型数组
      */
     public double[] forwardCalculation(double L, double B) {
-        logger.logGaussProjectionCoordinateSystem(this);
-        logger.logGaussProjectionForwardInputParameters(L, B);
-
         double X, l, N, t, eit2, x, y, xz, yz;
         l = L - CalculationTools.degree2Rad(centralMeridian); //计算坐标点与中央子午线的经差
         X = geodeticCoordinateSystem.calculateMeridianArc(B); //根据大地纬度计算子午线弧长
@@ -145,11 +128,6 @@ public class GaussKrugerProjectionCoordinateSystem {
         yz = y + falseEasting;
         xz = x + falseNorthing;
 
-        logger.logOutputResultIntroduction();
-        if (Math.abs(CalculationTools.rad2Degree(l)) > 3.5) {
-            logger.simpleLog(String.format("   警告！经差%.1f°，计算存在较大误差，且经差越大误差越大！" + System.lineSeparator(), Math.abs(CalculationTools.rad2Degree(l))));
-        }
-        logger.logGaussProjectionForwardResult(l, X, N, x, y, xz, yz);
         return new double[]{xz, yz, x, y};
     }
 
@@ -165,9 +143,6 @@ public class GaussKrugerProjectionCoordinateSystem {
      * @return 以L(大地经度)，B(大地纬度)，count(迭代总次数)，顺序排列的double类型数组
      */
     public double[] backwardCalculation(double x, double y, double precision, boolean hasFalse) {
-        logger.logGaussProjectionCoordinateSystem(this);
-        logger.logGaussProjectionBackwardInputParameters(x, y, hasFalse);
-
         int count;
         double[] BfC;
         double Bf, Mf, Nf, eit2f, tf, l, L, B;
@@ -180,8 +155,6 @@ public class GaussKrugerProjectionCoordinateSystem {
         //复位缩放因子
         y /= scaleFactor;
         x /= scaleFactor;
-
-        logger.logOutputResultIntroduction();
 
         BfC = geodeticCoordinateSystem.calculateGeodeticLatitudeFromMeridianArc(x, precision); //迭代法，根据子午线弧长推算大地纬度B,此处X轴真坐标值即为子午线弧长
         Bf = BfC[0];
@@ -201,11 +174,6 @@ public class GaussKrugerProjectionCoordinateSystem {
                 (5 + 28 * Math.pow(tf, 2) + 24 * Math.pow(tf, 4) + 6 * eit2f + 8 * eit2f * Math.pow(tf, 2)) * Math.pow(y, 5) / (120 * Math.pow(Nf, 5) * Math.cos(Bf));
         L = l + CalculationTools.degree2Rad(centralMeridian);
 
-
-        logger.logGaussProjectionBackwardResult(Mf, Nf, B, (int) BfC[1], L, l);
-        if (Math.abs(CalculationTools.rad2Degree(l)) > 3.5) {
-            logger.simpleLog(String.format("   警告！经差%.1f°，计算存在较大误差，且经差越大误差越大！" + System.lineSeparator(), Math.abs(CalculationTools.rad2Degree(l))));
-        }
         return new double[]{L, B, count};
     }
 
@@ -226,10 +194,12 @@ public class GaussKrugerProjectionCoordinateSystem {
      */
     public double[] projectionTransform(GaussKrugerProjectionCoordinateSystem outputSystem, double x, double y, double precision, boolean hasFalse) throws UnsupportedOperationException {
         if (!outputSystem.getGeodeticCoordinateSystem().equals(geodeticCoordinateSystem)) {
-            throw new UnsupportedOperationException("输入投影坐标系的大地坐标系与此投影坐标系的大地坐标系不符合");
+            throw new UnsupportedOperationException("两个投影坐标系的大地坐标系不一致");
         } else {
-            double[] lb = backwardCalculation(x, y, precision, hasFalse);
-            return outputSystem.forwardCalculation(lb[0], lb[1]);
+            double[] lbc = backwardCalculation(x, y, precision, hasFalse);
+            double[] newXY = outputSystem.forwardCalculation(lbc[0], lbc[1]);
+
+            return newXY;
         }
     }
 
@@ -306,25 +276,6 @@ public class GaussKrugerProjectionCoordinateSystem {
         return degree;
     }
 
-    /**
-     * 获取当前日志SimpleLogger实例
-     *
-     * @return Logger实例
-     * @see SimpleLogger
-     */
-    public SimpleLogger getLogger() {
-        return logger;
-    }
-
-    /**
-     * 设置日志SimpleLogger实例
-     *
-     * @param logger 日志SimpleLogger实例
-     * @see SimpleLogger
-     */
-    public void setLogger(SimpleLogger logger) {
-        this.logger = logger;
-    }
 
     /**
      * 获取此高斯克吕格投影坐标系名称
