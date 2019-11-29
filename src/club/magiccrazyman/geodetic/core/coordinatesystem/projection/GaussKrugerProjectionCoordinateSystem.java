@@ -3,6 +3,8 @@ package club.magiccrazyman.geodetic.core.coordinatesystem.projection;
 import club.magiccrazyman.geodetic.core.coordinatesystem.GeodeticCoordinateSystem;
 import club.magiccrazyman.geodetic.core.tools.CalculationTools;
 
+import java.util.ArrayList;
+
 /**
  * 高斯克吕格投影坐标系
  * <br>
@@ -102,9 +104,11 @@ public class GaussKrugerProjectionCoordinateSystem {
      *
      * @param L 大地经度，单位：弧度
      * @param B 大地纬度，单位：弧度
-     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，顺序排列的double类型数组
+     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，顺序排列的ArrayList
      */
-    public double[] forwardCalculation(double L, double B) {
+    public ArrayList<Double> forwardCalculation(double L, double B) {
+        ArrayList<Double> list = new ArrayList<>();
+
         double X, l, N, t, eit2, x, y, xz, yz;
         l = L - CalculationTools.degree2Rad(centralMeridian); //计算坐标点与中央子午线的经差
         X = geodeticCoordinateSystem.calculateMeridianArc(B); //根据大地纬度计算子午线弧长
@@ -128,7 +132,12 @@ public class GaussKrugerProjectionCoordinateSystem {
         yz = y + falseEasting;
         xz = x + falseNorthing;
 
-        return new double[]{xz, yz, x, y};
+        list.add(xz);
+        list.add(yz);
+        list.add(x);
+        list.add(y);
+        list.add(xz);
+        return list;
     }
 
     /**
@@ -140,11 +149,12 @@ public class GaussKrugerProjectionCoordinateSystem {
      * @param y         Y轴坐标值，单位：米
      * @param precision 大地纬度迭代精度，单位：弧度
      * @param hasFalse  坐标值是否含有伪偏移值，此偏移值包含带号
-     * @return 以L(大地经度)，B(大地纬度)，count(迭代总次数)，顺序排列的double类型数组
+     * @return 以L(大地经度)，B(大地纬度)，l(经差)，count(迭代总次数)，...(Bf每次迭代值)顺序排列ArrayList
      */
-    public double[] backwardCalculation(double x, double y, double precision, boolean hasFalse) {
-        int count;
-        double[] BfC;
+    public ArrayList<Double> backwardCalculation(double x, double y, double precision, boolean hasFalse) {
+        ArrayList<Double> list = new ArrayList<>();
+
+        ArrayList<Double> Bi;
         double Bf, Mf, Nf, eit2f, tf, l, L, B;
         //修正伪偏移值
         if (hasFalse) {
@@ -156,9 +166,8 @@ public class GaussKrugerProjectionCoordinateSystem {
         y /= scaleFactor;
         x /= scaleFactor;
 
-        BfC = geodeticCoordinateSystem.calculateGeodeticLatitudeFromMeridianArc(x, precision); //迭代法，根据子午线弧长推算大地纬度B,此处X轴真坐标值即为子午线弧长
-        Bf = BfC[0];
-        count = (int) BfC[1];
+        Bi = geodeticCoordinateSystem.calculateGeodeticLatitudeFromMeridianArc(x, precision); //迭代法，根据子午线弧长推算大地纬度B,此处X轴真坐标值即为子午线弧长
+        Bf = Bi.get(Bi.size() - 1);
         eit2f = geodeticCoordinateSystem.getDE2() * Math.pow(Math.cos(Bf), 2); //η^2 = e'^2 * cos(B)^2
         tf = Math.tan(Bf); //t = atan(B)
         Mf = geodeticCoordinateSystem.calculateMeridianCurvatureRadius(eit2f); //计算子午圈曲率半径
@@ -174,7 +183,12 @@ public class GaussKrugerProjectionCoordinateSystem {
                 (5 + 28 * Math.pow(tf, 2) + 24 * Math.pow(tf, 4) + 6 * eit2f + 8 * eit2f * Math.pow(tf, 2)) * Math.pow(y, 5) / (120 * Math.pow(Nf, 5) * Math.cos(Bf));
         L = l + CalculationTools.degree2Rad(centralMeridian);
 
-        return new double[]{L, B, count};
+        list.add(L);
+        list.add(B);
+        list.add(l);
+        list.add((double) Bi.size() - 1); //Bi第一个值为初值，不算在迭代次数中
+        list.addAll(Bi);
+        return list;
     }
 
     /**
@@ -187,19 +201,23 @@ public class GaussKrugerProjectionCoordinateSystem {
      * @param y            y轴坐标值
      * @param precision    迭代精度
      * @param hasFalse     坐标值是否含有伪偏移值，此偏移值包含带号
-     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，顺序排列的double类型数组
+     * @return 以xz(X轴偏移坐标值)，yz(Y轴偏移坐标值)，x(X轴真坐标值)，y(Y轴真坐标值)，L(大地经度)，B(大地纬度)，l(经差)，count(迭代总次数)，...(Bf每次迭代值)顺序排列的ArrayList
      * @throws UnsupportedOperationException 当两个投影坐标系的大地坐标系不一致时抛出此异常
      * @see GaussKrugerProjectionCoordinateSystem#forwardCalculation(double, double)
      * @see GaussKrugerProjectionCoordinateSystem#backwardCalculation(double, double, double, boolean)
      */
-    public double[] projectionTransform(GaussKrugerProjectionCoordinateSystem outputSystem, double x, double y, double precision, boolean hasFalse) throws UnsupportedOperationException {
+    public ArrayList<Double> projectionTransform(GaussKrugerProjectionCoordinateSystem outputSystem, double x, double y, double precision, boolean hasFalse) throws UnsupportedOperationException {
         if (!outputSystem.getGeodeticCoordinateSystem().equals(geodeticCoordinateSystem)) {
             throw new UnsupportedOperationException("两个投影坐标系的大地坐标系不一致");
         } else {
-            double[] lbc = backwardCalculation(x, y, precision, hasFalse);
-            double[] newXY = outputSystem.forwardCalculation(lbc[0], lbc[1]);
+            ArrayList<Double> list = new ArrayList<>();
 
-            return newXY;
+            ArrayList<Double> lb = backwardCalculation(x, y, precision, hasFalse);
+            ArrayList<Double> newXY = outputSystem.forwardCalculation(lb.get(0), lb.get(1));
+
+            list.addAll(newXY);
+            list.addAll(lb);
+            return list;
         }
     }
 

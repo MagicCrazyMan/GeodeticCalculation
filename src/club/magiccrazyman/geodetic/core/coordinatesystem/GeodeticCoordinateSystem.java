@@ -2,6 +2,10 @@ package club.magiccrazyman.geodetic.core.coordinatesystem;
 
 import club.magiccrazyman.geodetic.core.tools.CalculationTools;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * 大地坐标系
  * <br>
@@ -71,27 +75,33 @@ public class GeodeticCoordinateSystem {
      * @param Y         空间直角坐标系Y轴值，单位：米
      * @param Z         空间直角坐标系Z轴值，单位：米
      * @param precision 大地纬度B迭代精度，单位：弧度
-     * @return 以L(大地经度), B(大地纬度), H(大地高)，count(迭代总次数)顺序排列的double类型数组
+     * @return 以L(大地经度), B(大地纬度), H(大地高)，count(迭代总次数)，...(每次迭代值)顺序排列ArrayList
      */
-    public double[] transformToGeodeticCoordinateSystem(double X, double Y, double Z, double precision) {
+    public ArrayList<Double> transformToGeodeticCoordinateSystem(double X, double Y, double Z, double precision) {
+        ArrayList<Double> list = new ArrayList<>();
+
         double N, L, B, H;
-        int count;
 
         //L = acos(X / sqrt(X^2 + Y^2))
         L = Math.acos(X / Math.hypot(X, Y));
         if (Y < 0) { //由于计算结果恒小于等于180度，故如果Y小于0，则需要取反
-            L = -L;
+            L -= L;
         }
 
         //B迭代推算
-        double[] tmp = calculateGeodeticLatitudeFromSpatialSystem(X, Y, Z, precision);
-        B = tmp[0];
-        count = (int) tmp[1];
+        ArrayList<Double> Bi = calculateGeodeticLatitudeFromSpatialSystem(X, Y, Z, precision);
+        B = Bi.get(Bi.size() - 1);
 
         //H = Z / sinB - N * (1 -e^2)
         N = a / (Math.sqrt(1 - e2 * Math.pow(Math.sin(B), 2)));
         H = Z / Math.sin(B) - N * (1 - e2);
-        return new double[]{L, B, H, count};
+
+        list.add(L);
+        list.add(B);
+        list.add(H);
+        list.add((double) Bi.size() - 1); //Bi中的第一个值为初值，不算在迭代次数中
+        list.addAll(Bi);
+        return list;
     }
 
     /**
@@ -103,12 +113,15 @@ public class GeodeticCoordinateSystem {
      * @param Y         空间直角坐标系Y轴值，单位：米
      * @param Z         空间直角坐标系Z轴值，单位：米
      * @param precision 大地纬度B迭代精度，单位：弧度
-     * @return 以B(大地纬度)，count(迭代次数)顺序排列的double类型数组
-     * @see GeodeticCoordinateSystem#calculateGeodeticLatitudeFromSpatialSystemIteration(double, double, double, double, double, int)
+     * @return 包含每次迭代值的ArrayList，最后一个值即为最终计算值
+     * @see GeodeticCoordinateSystem#calculateGeodeticLatitudeFromSpatialSystemIteration(double, double, double, double, double, ArrayList)
      */
-    public double[] calculateGeodeticLatitudeFromSpatialSystem(double X, double Y, double Z, double precision) {
+    public ArrayList<Double> calculateGeodeticLatitudeFromSpatialSystem(double X, double Y, double Z, double precision) {
         double tanB1 = Z / Math.hypot(X, Y);
-        return this.calculateGeodeticLatitudeFromSpatialSystemIteration(X, Y, Z, precision, tanB1, 1);
+        double t0 = Z / Math.hypot(X, Y);
+        double p = c * e2 / Math.hypot(X, Y);
+        double k = 1 + de2;
+        return this.calculateGeodeticLatitudeFromSpatialSystemIteration(precision, tanB1, t0, p, k, new ArrayList<>());
     }
 
     /**
@@ -116,32 +129,30 @@ public class GeodeticCoordinateSystem {
      * <br>
      * 详细请参考《大地测量学基础》（第二版），武汉大学出版社。第105页
      *
-     * @param X         空间直角坐标系X轴值，单位：米
-     * @param Y         空间直角坐标系Y轴值，单位：米
-     * @param Z         空间直角坐标系Z轴值，单位：米
      * @param precision 大地纬度B迭代精度，单位：弧度
      * @param tanB1     前一次迭代所得的tanB值
-     * @param count     迭代次数，由1开始
-     * @return 以B(大地纬度)，count(迭代次数)顺序排列的double类型数组
+     * @param t0        递归计算使用参数
+     * @param p         递归计算使用参数
+     * @param k         递归计算使用参数
+     * @param list      用于递归的ArrayList
+     * @return 包含每次迭代值的ArrayList，最后一个值即为最终计算值
      */
-    private double[] calculateGeodeticLatitudeFromSpatialSystemIteration(double X, double Y, double Z, double precision, double tanB1, int count) {
-        final double t0, p, k;
-
-        t0 = Z / Math.hypot(X, Y);
-        p = c * e2 / Math.hypot(X, Y);
-        k = 1 + de2;
-
+    private ArrayList<Double> calculateGeodeticLatitudeFromSpatialSystemIteration(double precision, double tanB1, double t0, double p, double k, ArrayList<Double> list) {
         double tanB2, B1, B2;
-        tanB2 = t0 + p * tanB1 / Math.sqrt(k + Math.pow(tanB1, 2));
+
         B1 = Math.atan(tanB1);
+        list.add(B1);
+
+        tanB2 = t0 + p * tanB1 / Math.sqrt(k + Math.pow(tanB1, 2));
         B2 = Math.atan(tanB2);
 
         if (Math.abs(B1 - B2) <= precision) {
             //检验精度要求，达到精度要求便中止迭代并返回大地纬度B
-            return new double[]{B2, count};
+            list.add(B2);
+            return list;
         } else {
             //否则继续进行迭代
-            return this.calculateGeodeticLatitudeFromSpatialSystemIteration(X, Y, Z, precision, tanB2, ++count);
+            return this.calculateGeodeticLatitudeFromSpatialSystemIteration(precision, tanB2, t0, p, k, list);
         }
     }
 
@@ -153,9 +164,11 @@ public class GeodeticCoordinateSystem {
      * @param L 大地经度，单位：弧度
      * @param B 大地纬度，单位：弧度
      * @param H 大地高，单位：米
-     * @return 以X(X轴坐标值), Y(Y轴坐标值), Z(Z轴坐标值)顺序排列的double类型数组
+     * @return 以X(X轴坐标值), Y(Y轴坐标值), Z(Z轴坐标值)顺序排列的ArrayList
      */
-    public double[] transformToSpatialCoordinateSystem(double L, double B, double H) {
+    public ArrayList<Double> transformToSpatialCoordinateSystem(double L, double B, double H) {
+        ArrayList<Double> list = new ArrayList<>();
+
         double N, X, Y, Z;
 
         //X = (N + H) * cosB * cosL
@@ -168,7 +181,10 @@ public class GeodeticCoordinateSystem {
         //Z = (H * (1 - e^2) + H) * sinB
         Z = (N * (1 - e2) + H) * Math.sin(B);
 
-        return new double[]{X, Y, Z};
+        list.add(X);
+        list.add(Y);
+        list.add(Z);
+        return list;
     }
 
     /**
@@ -180,9 +196,10 @@ public class GeodeticCoordinateSystem {
      * @param B1 大地线起点的纬度B1，单位：弧度
      * @param A1 大地线起点的大地方位角A1，单位：弧度
      * @param S  大地线长度S，单位：米
-     * @return 以L2(大地线终点的经度L2)，B2(大地线终点的纬度B2)，A2(大地线终点的大地方位角A2)顺序排序的double类型数组
+     * @return 以L2(大地线终点的经度L2)，B2(大地线终点的纬度B2)，A2(大地线终点的大地方位角A2)顺序排序的ArrayList
      */
-    public double[] directSolutionOfGeodeticProblem(double L1, double B1, double A1, double S) {
+    public ArrayList<Double> directSolutionOfGeodeticProblem(double L1, double B1, double A1, double S) {
+        ArrayList<Double> list = new ArrayList<>();
         double W1, sinu1, cosu1, sinA0, cosA0, cotO1, sin2O1, cos2O1, sin2O0, cos2O0, sigma0, sigma, k2, A, B, C, alpha, beta, delta, sinu2, B2, lambda, sinA1, tanlambda, L2, A2, tanA2;
         //计算起点的归化纬度归化纬度
         W1 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B1), 2));
@@ -244,7 +261,10 @@ public class GeodeticCoordinateSystem {
             A2 = CalculationTools.degree2Rad(360) - A2;
         }
 
-        return new double[]{L2, B2, A2};
+        list.add(L2);
+        list.add(B2);
+        list.add(A2);
+        return list;
     }
 
     /**
@@ -257,9 +277,10 @@ public class GeodeticCoordinateSystem {
      * @param L2        终点大地坐标的大地经度L1，单位：弧度
      * @param B2        终点大地坐标的大地纬度B1，单位：弧度
      * @param precision 迭代推算经度
-     * @return 以A1(起点大地方位角)，A2(终点大地方位角)，S(大地线)顺序排序的double类型数组
+     * @return 以A1(起点大地方位角)，A2(终点大地方位角)，S(大地线)，count(趋近次数)，...(每次趋近σ值)顺序排序的ArrayList
      */
-    public double[] inverseSolutionOfGeodeticProblem(double L1, double B1, double L2, double B2, double precision) {
+    public ArrayList<Double> inverseSolutionOfGeodeticProblem(double L1, double B1, double L2, double B2, double precision) {
+        ArrayList<Double> list = new ArrayList<>();
         double S, A1, A2, W1, W2, sinu1, sinu2, cosu1, cosu2, L, a1, a2, b1, b2, p, q, sinO, cosO, sigma, lambda, sinA0, cosA0_2, x, alpha, beta, delta1, delta2, y, k2, A, B, C, dB, dC;
         //计算两点的归化纬度
         W1 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B1), 2));
@@ -277,6 +298,7 @@ public class GeodeticCoordinateSystem {
         b2 = sinu1 * cosu2;
 
         //逐次趋近法计算σ，实在不想用迭代了，就用for循环好了
+        ArrayList<Double> list1 = new ArrayList<>();
         delta2 = 0;
         do {
             delta1 = delta2;
@@ -311,6 +333,7 @@ public class GeodeticCoordinateSystem {
             alpha = (e2 / 2 + Math.pow(e2, 2) / 8 + Math.pow(e2, 3) / 16) - (Math.pow(e2, 2) / 16 + Math.pow(e2, 3) / 16) * cosA0_2 + (3 * Math.pow(e2, 3) / 128) * Math.pow(cosA0_2, 2);
             beta = (Math.pow(e2, 2) / 32 + Math.pow(e2, 3) / 32) - (Math.pow(e2, 3) / 64) * cosA0_2;
             delta2 = (alpha * sigma - 2 * beta * x * sinO) * sinA0;
+            list1.add(sigma);
         } while (Math.abs(delta2 - delta1) > precision);
 
         //计算系数A，B"，C"和大地线S
@@ -329,7 +352,13 @@ public class GeodeticCoordinateSystem {
         if (A1 < CalculationTools.degree2Rad(180)) {
             A2 += CalculationTools.degree2Rad(180);
         }
-        return new double[]{A1, A2, S};
+
+        list.add(A1);
+        list.add(A2);
+        list.add(S);
+        list.add((double) list1.size());
+        list.addAll(list1);
+        return list;
     }
 
     /**
@@ -409,14 +438,14 @@ public class GeodeticCoordinateSystem {
      *
      * @param X         X轴真坐标值，单位：米
      * @param precision 推算精度，单位：弧度
-     * @return 以B(大地纬度)，count(迭代次数)顺序排列的double类型数组
-     * @see GeodeticCoordinateSystem#calculateGeodeticLatitudeFromMeridianArcIteration(double[], double, double, double, int)
+     * @return 包含每次迭代值的ArrayList，最后一个值即为最终计算值
+     * @see GeodeticCoordinateSystem#calculateGeodeticLatitudeFromMeridianArcIteration(double, double, double, double[], ArrayList)
      */
-    public double[] calculateGeodeticLatitudeFromMeridianArc(double X, double precision) {
+    public ArrayList<Double> calculateGeodeticLatitudeFromMeridianArc(double X, double precision) {
         double[] parameters = calculateMeridianArcParameters();
         double start = X / parameters[0]; //迭代初始值 = X / parameters[0]
 
-        return calculateGeodeticLatitudeFromMeridianArcIteration(parameters, start, X, precision, 1);
+        return calculateGeodeticLatitudeFromMeridianArcIteration(start, X, precision, parameters, new ArrayList<>());
     }
 
     /**
@@ -424,21 +453,25 @@ public class GeodeticCoordinateSystem {
      * <br>
      * 详细请参考《大地测量学基础》（第二版），武汉大学出版社。第118页
      *
-     * @param parameters 子午线弧长计算参数
      * @param B1         前次迭代值
      * @param X          X轴真坐标值
      * @param precision  迭代精度
-     * @param count      迭代次数
-     * @return 以B(大地纬度)，count(迭代次数)顺序排列的double类型数组
+     * @param parameters 子午线弧长计算参数
+     * @param list       用于递归的ArrayList
+     * @return 包含每次迭代值的ArrayList，最后一个值即为最终计算值
      */
-    private double[] calculateGeodeticLatitudeFromMeridianArcIteration(double[] parameters, double B1, double X, double precision, int count) {
+    private ArrayList<Double> calculateGeodeticLatitudeFromMeridianArcIteration(double B1, double X, double precision, double[] parameters, ArrayList<Double> list) {
+        list.add(B1);
         double B2 = (X - (-1 * parameters[1] / 2 * Math.sin(2 * B1) + parameters[2] / 4 * Math.sin(4 * B1) - parameters[3] / 6 * Math.sin(6 * B1) + parameters[4] / 8 * Math.sin(8 * B1))) / parameters[0];
         if (Math.abs(B2 - B1) <= precision) {
-            return new double[]{B2, count};
+            list.add(B2);
+            return list;
         } else {
-            return calculateGeodeticLatitudeFromMeridianArcIteration(parameters, B2, X, precision, ++count);
+            return calculateGeodeticLatitudeFromMeridianArcIteration(B2, X, precision, parameters, list);
         }
     }
+
+    private double[] meridianArcParameters;
 
     /**
      * 计算子午线弧长计算参数
@@ -448,19 +481,23 @@ public class GeodeticCoordinateSystem {
      * @return 以a0，a2，a4，a6，a8顺序排列的double类型数组
      */
     public double[] calculateMeridianArcParameters() {
-        double m0, m2, m4, m6, m8, a0, a2, a4, a6, a8;
-        m0 = a * (1 - e2);
-        m2 = 3.0 / 2 * e2 * m0;
-        m4 = 5.0 / 4 * e2 * m2;
-        m6 = 7.0 / 6 * e2 * m4;
-        m8 = 9.0 / 8 * e2 * m6;
+        if (meridianArcParameters == null) {
+            double m0, m2, m4, m6, m8, a0, a2, a4, a6, a8;
+            m0 = a * (1 - e2);
+            m2 = 3.0 / 2 * e2 * m0;
+            m4 = 5.0 / 4 * e2 * m2;
+            m6 = 7.0 / 6 * e2 * m4;
+            m8 = 9.0 / 8 * e2 * m6;
 
-        a0 = m0 + m2 / 2 + 3.0 / 8 * m4 + 5.0 / 16 * m6 + 35.0 / 128 * m8;
-        a2 = m2 / 2 + m4 / 2 + 15.0 / 32 * m6 + 7.0 / 16 * m8;
-        a4 = m4 / 8 + 3.0 / 16 * m6 + 7.0 / 32 * m8;
-        a6 = m6 / 32 + m8 / 16;
-        a8 = m8 / 128;
-        return new double[]{a0, a2, a4, a6, a8};
+            a0 = m0 + m2 / 2 + 3.0 / 8 * m4 + 5.0 / 16 * m6 + 35.0 / 128 * m8;
+            a2 = m2 / 2 + m4 / 2 + 15.0 / 32 * m6 + 7.0 / 16 * m8;
+            a4 = m4 / 8 + 3.0 / 16 * m6 + 7.0 / 32 * m8;
+            a6 = m6 / 32 + m8 / 16;
+            a8 = m8 / 128;
+
+            meridianArcParameters = new double[]{a0, a2, a4, a6, a8};
+        }
+        return meridianArcParameters;
     }
 
     /**
