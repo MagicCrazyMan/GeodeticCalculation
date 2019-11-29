@@ -562,7 +562,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         /**
          * 大地坐标系：WGS 1984
          * <br>
-         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：0.996；纬度起点：0.0；线性单位：Meter(1.0)
+         * 高斯投影坐标系：6度带；不添加带号；111°E中央子午线；东伪偏移500000.0米；北伪偏移：0.0米；缩放因子：0.9996；纬度起点：0.0；线性单位：Meter(1.0)
          */
         WGS_1984_UTM_Zone_49N(new GaussKrugerProjectionCoordinateSystem(GeodeticCoordinateSystem.RecordedSystem.WGS_1984.getSystem(),
                 6,
@@ -570,7 +570,7 @@ public class GaussKrugerProjectionCoordinateSystem {
                 500000.0,
                 0.0,
                 111.0,
-                0.996,
+                0.9996,
                 0.0,
                 "Meter (1.0)",
                 "WGS_1984_GK_Zone_19"));
