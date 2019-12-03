@@ -299,10 +299,10 @@
                                           <TextField fx:id="projectionAxisYTextField111" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" promptText="若有带号会加上带号" />
                                           <Label layoutX="220.0" layoutY="64.0" text="米" />
                                           <Label layoutX="240.0" layoutY="34.0" text="X轴真坐标值" />
-                                          <TextField fx:id="projectionAxisXTextField211" alignment="CENTER_RIGHT" disable="true" layoutX="314.0" layoutY="30.0" prefHeight="23.0" prefWidth="130.0" />
+                                          <TextField fx:id="projectionAxisXTextField211" alignment="CENTER_RIGHT" layoutX="314.0" layoutY="30.0" prefHeight="23.0" prefWidth="130.0" />
                                           <Label layoutX="448.0" layoutY="34.0" text="米" />
                                           <Label layoutX="240.0" layoutY="64.0" text="Y轴真坐标值" />
-                                          <TextField fx:id="projectionAxisYTextField211" alignment="CENTER_RIGHT" disable="true" layoutX="314.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
+                                          <TextField fx:id="projectionAxisYTextField211" alignment="CENTER_RIGHT" layoutX="314.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
                                           <Label layoutX="448.0" layoutY="64.0" text="米" />
                                        </children>
                                     </AnchorPane>
