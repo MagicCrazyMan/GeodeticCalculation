@@ -2,13 +2,11 @@ package club.magiccrazyman.geodetic.ui;
 
 import club.magiccrazyman.geodetic.core.coordinatesystem.GeodeticCoordinateSystem;
 import club.magiccrazyman.geodetic.core.coordinatesystem.projection.GaussKrugerProjectionCoordinateSystem;
-import club.magiccrazyman.geodetic.core.logger.SimpleLogger;
 import club.magiccrazyman.geodetic.core.tools.CalculationTools;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -111,61 +109,33 @@ public class UserInterfaceController {
             "   大地经度L：%.4f 弧度" + System.lineSeparator() +
             "       经差l：%.4f 弧度" + System.lineSeparator();
 
-    @FXML
     public RadioButton showCalculation;
-    @FXML
     public TextField precisionTextField1;
-    @FXML
     public TextField longitudeTextField1;
-    @FXML
     public TextField latitudeTextField1;
-    @FXML
     public TextField longitudeDegreeTextField1;
-    @FXML
     public TextField longitudeMinsTextField1;
-    @FXML
     public TextField longitudeSecondsTextField1;
-    @FXML
     public TextField latitudeDegreeTextField1;
-    @FXML
     public TextField latitudeMinsTextField1;
-    @FXML
     public TextField latitudeSecondsTextField1;
-    @FXML
     public TextField heightTextField1;
-    @FXML
     public TextField indexTextField;
-    @FXML
     public TextField projectionAxisXTextField1;
-    @FXML
     public TextField projectionAxisYTextField1;
-    @FXML
     public TextField centralMeridianTextField;
-    @FXML
     public TextField projectionAxisXTextField2;
-    @FXML
     public TextField projectionAxisYTextField2;
-    @FXML
     public Button proj2GeoButton;
-    @FXML
     public Button geo2ProjButton;
-    @FXML
     public Button clearButton1;
-    @FXML
     public Label systemLabel;
-    @FXML
     public TabPane selectionTabPane;
-    @FXML
     public Tab coordinateTransformTab;
-    @FXML
     public Tab projectionTransformTab;
-    @FXML
     public Button trueOrFalseButton;
-    @FXML
     public ChoiceBox NorS;
-    @FXML
     public ChoiceBox EorW;
-    @FXML
     public Button inputMethodButton1;
     public TextField precisionTextField2;
     public Button inputMethodButton2;
@@ -197,64 +167,46 @@ public class UserInterfaceController {
     public TextField angleMinsTextField3;
     public TextField angleDegreeTextField3;
     public Button clearButton2;
-    @FXML
-    private Button spatial2GeoButton;
-    @FXML
-    private TextField precisionTextField;
-    @FXML
-    private Button geo2SpatialButton;
-    @FXML
-    private TextField axisZTextField;
-    @FXML
-    private TextField axisYTextField;
-    @FXML
-    private TextField axisXTextField;
-    @FXML
-    private TextField longitudeMinsTextField;
-    @FXML
-    private TextField longitudeDegreeTextField;
-    @FXML
-    private TextField longitudeSecondsTextField;
-    @FXML
-    private TextField latitudeSecondsTextField;
-    @FXML
-    private TextField latitudeDegreeTextField;
-    @FXML
-    private TextField latitudeMinsTextField;
-    @FXML
-    private TextField heightTextField;
-    @FXML
-    private TextField latitudeTextField;
-    @FXML
-    private TextField longitudeTextField;
-    @FXML
-    private Button inputMethodButton;
-    @FXML
-    private ComboBox systemComboBox;
-    @FXML
-    private Button clearButton;
+    public Button trueOrFalseButton1;
+    public TextField indexTextField1;
+    public TextField centralMeridianTextField1;
+    public TextField projectionAxisXTextField11;
+    public TextField projectionAxisYTextField11;
+    public TextField projectionAxisXTextField21;
+    public TextField projectionAxisYTextField21;
+    public ComboBox systemComboBox1;
+    public TextField indexTextField11;
+    public TextField centralMeridianTextField11;
+    public TextField projectionAxisXTextField111;
+    public TextField projectionAxisYTextField111;
+    public TextField projectionAxisXTextField211;
+    public TextField projectionAxisYTextField211;
+    public Button gaussProjectionTransformButton;
+    public Label systemLabel1;
+    public Button spatial2GeoButton;
+    public TextField precisionTextField;
+    public Button geo2SpatialButton;
+    public TextField axisZTextField;
+    public TextField axisYTextField;
+    public TextField axisXTextField;
+    public TextField longitudeMinsTextField;
+    public TextField longitudeDegreeTextField;
+    public TextField longitudeSecondsTextField;
+    public TextField latitudeSecondsTextField;
+    public TextField latitudeDegreeTextField;
+    public TextField latitudeMinsTextField;
+    public TextField heightTextField;
+    public TextField latitudeTextField;
+    public TextField longitudeTextField;
+    public Button inputMethodButton;
+    public ComboBox systemComboBox;
+    public Button clearButton;
+    public TextField precisionTextField11;
+    public Button clearButton11;
 
     private Stage stage;
     private AnchorPane processPane;
     private TextArea processTextArea;
-
-    private Handler handler = new Handler() {
-        @Override
-        public void publish(LogRecord record) {
-            if (processPane != null) {
-                processTextArea.appendText(record.getMessage());
-            }
-        }
-
-        @Override
-        public void flush() {
-        }
-
-        @Override
-        public void close() throws SecurityException {
-
-        }
-    };
 
     private GeodeticCoordinateSystem geodeticSystem;
     private ChangeListener geodeticListener = new ChangeListener() {
@@ -269,8 +221,23 @@ public class UserInterfaceController {
         @Override
         public void changed(ObservableValue observable, Object oldValue, Object newValue) {
             projectionSystem = (GaussKrugerProjectionCoordinateSystem) newValue;
-            indexTextField.setText(String.valueOf(projectionSystem.getDegree()));
-            centralMeridianTextField.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+            int index = selectionTabPane.getSelectionModel().getSelectedIndex();
+            if (index == 2) {
+                indexTextField.setText(String.valueOf(projectionSystem.getDegree()));
+                centralMeridianTextField.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+            } else if (index == 3) {
+                indexTextField1.setText(String.valueOf(projectionSystem.getDegree()));
+                centralMeridianTextField1.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+            }
+        }
+    };
+
+    private ChangeListener projectionListener1 = new ChangeListener() {
+        @Override
+        public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+            GaussKrugerProjectionCoordinateSystem system = (GaussKrugerProjectionCoordinateSystem) newValue;
+            indexTextField11.setText(String.valueOf(system.getDegree()));
+            centralMeridianTextField11.setText(system.getCentralMeridian() > 0 ? system.getCentralMeridian() + " E" : system.getCentralMeridian() + " W");
         }
     };
 
@@ -278,6 +245,8 @@ public class UserInterfaceController {
 
     private int geodeticInputMode1 = 0;
     private int trueOrFalse = 0;
+
+    private int trueOrFalse1 = 0;
 
     private int geodeticInputMode2 = 0;
 
@@ -304,12 +273,37 @@ public class UserInterfaceController {
             @Override
             public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
                 int index = selectionTabPane.getSelectionModel().getSelectedIndex();
-                if (index == 0) {
-                    initCoordinateTransformTab();
-                } else if (index == 1) {
-                    initCoordinateTransformTab();
-                } else if (index == 2) {
-                    initProjectionTransformTab();
+                switch (index) {
+                    case 0:
+                    case 1:
+                        initCoordinateTransformTab();
+                        break;
+                    case 2:
+                        initProjectionTransformTab();
+                        break;
+                    case 3:
+                        initProjectionTransformTab();
+                        for (GaussKrugerProjectionCoordinateSystem.RecordedSystem system : GaussKrugerProjectionCoordinateSystem.RecordedSystem.values()) {
+                            systemComboBox1.getItems().add(system.getSystem());
+                            //设置字符串映射表
+                            systemComboBox1.setConverter(new StringConverter() {
+                                @Override
+                                public String toString(Object system) {
+                                    return ((GaussKrugerProjectionCoordinateSystem) system).getName();
+                                }
+
+                                @Override
+                                public Object fromString(String string) {
+                                    return null;
+                                }
+                            });
+                        }
+                        systemComboBox1.getSelectionModel().select(0);
+                        systemComboBox1.getSelectionModel().selectedItemProperty().removeListener(projectionListener1);
+                        systemComboBox1.getSelectionModel().selectedItemProperty().addListener(projectionListener1);
+                        indexTextField11.setText(String.valueOf(projectionSystem.getDegree()));
+                        centralMeridianTextField11.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+                        break;
                 }
             }
         });
@@ -350,7 +344,7 @@ public class UserInterfaceController {
 
     private void initProjectionTransformTab() {
         //删除原有Listener
-        systemComboBox.getSelectionModel().selectedItemProperty().removeListener(geodeticListener);
+        systemComboBox.getSelectionModel().selectedItemProperty().removeListener(projectionListener);
         systemComboBox.getSelectionModel().selectedItemProperty().removeListener(geodeticListener);
 
         //修改label
@@ -376,8 +370,14 @@ public class UserInterfaceController {
         //默认选择第一项
         systemComboBox.getSelectionModel().select(0);
         projectionSystem = (GaussKrugerProjectionCoordinateSystem) systemComboBox.getSelectionModel().getSelectedItem();
-        indexTextField.setText(String.valueOf(projectionSystem.getDegree()));
-        centralMeridianTextField.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+        int index = selectionTabPane.getSelectionModel().getSelectedIndex();
+        if (index == 2) {
+            indexTextField.setText(String.valueOf(projectionSystem.getDegree()));
+            centralMeridianTextField.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+        } else if (index == 3) {
+            indexTextField1.setText(String.valueOf(projectionSystem.getDegree()));
+            centralMeridianTextField1.setText(projectionSystem.getCentralMeridian() > 0 ? projectionSystem.getCentralMeridian() + " E" : projectionSystem.getCentralMeridian() + " W");
+        }
 
         //设置选择项修改Listener
         systemComboBox.getSelectionModel().selectedItemProperty().addListener(projectionListener);
@@ -472,6 +472,16 @@ public class UserInterfaceController {
             angleSecondsTextField3.clear();
 
             geodeticLineTextField.clear();
+        } else if (btn.getId().equals("clearButton11")) {
+            projectionAxisXTextField11.clear();
+            projectionAxisXTextField21.clear();
+            projectionAxisYTextField11.clear();
+            projectionAxisYTextField21.clear();
+
+            projectionAxisXTextField111.clear();
+            projectionAxisXTextField211.clear();
+            projectionAxisYTextField111.clear();
+            projectionAxisYTextField211.clear();
         }
         if (processPane != null) {
             processTextArea.clear();
@@ -877,22 +887,43 @@ public class UserInterfaceController {
     }
 
     public void trueOrFalseButtonClick(ActionEvent actionEvent) {
-        if (trueOrFalse == 0) {
-            trueOrFalse = 1;
+        String id = ((Button) actionEvent.getSource()).getId();
+        if (id.equals("trueOrFalseButton")) {
+            if (trueOrFalse == 0) {
+                trueOrFalse = 1;
 
-            projectionAxisXTextField1.setDisable(true);
-            projectionAxisYTextField1.setDisable(true);
+                projectionAxisXTextField1.setDisable(true);
+                projectionAxisYTextField1.setDisable(true);
 
-            projectionAxisXTextField2.setDisable(false);
-            projectionAxisYTextField2.setDisable(false);
-        } else {
-            trueOrFalse = 0;
+                projectionAxisXTextField2.setDisable(false);
+                projectionAxisYTextField2.setDisable(false);
+            } else {
+                trueOrFalse = 0;
 
-            projectionAxisXTextField1.setDisable(false);
-            projectionAxisYTextField1.setDisable(false);
+                projectionAxisXTextField1.setDisable(false);
+                projectionAxisYTextField1.setDisable(false);
 
-            projectionAxisXTextField2.setDisable(true);
-            projectionAxisYTextField2.setDisable(true);
+                projectionAxisXTextField2.setDisable(true);
+                projectionAxisYTextField2.setDisable(true);
+            }
+        } else if (id.equals("trueOrFalseButton1")) {
+            if (trueOrFalse1 == 0) {
+                trueOrFalse1 = 1;
+
+                projectionAxisXTextField11.setDisable(true);
+                projectionAxisYTextField11.setDisable(true);
+
+                projectionAxisXTextField21.setDisable(false);
+                projectionAxisYTextField21.setDisable(false);
+            } else {
+                trueOrFalse1 = 0;
+
+                projectionAxisXTextField11.setDisable(false);
+                projectionAxisYTextField11.setDisable(false);
+
+                projectionAxisXTextField21.setDisable(true);
+                projectionAxisYTextField21.setDisable(true);
+            }
         }
     }
 
@@ -1097,5 +1128,31 @@ public class UserInterfaceController {
         values[1] = degree.split("°")[1].split("\'")[0];
         values[2] = degree.split("°")[1].split("\'")[1].split("\"")[0];
         return values;
+    }
+
+    public void gaussProjectionTransformButtonClick(ActionEvent actionEvent) {
+        double X, Y, precision;
+        boolean hasFalse;
+        ArrayList<Double> XY;
+
+        precision = Double.parseDouble(precisionTextField11.getText());
+        GaussKrugerProjectionCoordinateSystem output = (GaussKrugerProjectionCoordinateSystem) systemComboBox1.getSelectionModel().getSelectedItem();
+
+        if (trueOrFalse1 == 0) {
+            X = Double.parseDouble(projectionAxisXTextField11.getText());
+            Y = Double.parseDouble(projectionAxisYTextField11.getText());
+            hasFalse = true;
+            XY = projectionSystem.projectionTransform(output, X, Y, precision, hasFalse);
+        } else {
+            X = Double.parseDouble(projectionAxisXTextField21.getText());
+            Y = Double.parseDouble(projectionAxisYTextField21.getText());
+            hasFalse = false;
+            XY = projectionSystem.projectionTransform(output, X, Y, precision, hasFalse);
+        }
+
+        projectionAxisXTextField111.setText(String.format("%.4f", XY.get(0)));
+        projectionAxisYTextField111.setText(String.format("%.4f", XY.get(1)));
+        projectionAxisXTextField211.setText(String.format("%.4f", XY.get(2)));
+        projectionAxisYTextField211.setText(String.format("%.4f", XY.get(3)));
     }
 }
