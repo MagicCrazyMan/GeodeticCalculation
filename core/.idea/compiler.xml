@@ -7,19 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="core" />
-        <module name="gui" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="core" target="13" />
-      <module name="gui" target="13" />
     </bytecodeTargetLevel>
-  </component>
-  <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_STRING" value="-encoding utf-8" />
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="core" options="" />
-      <module name="gui" options="" />
-    </option>
   </component>
 </project>

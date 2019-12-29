@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="513bf63f-1922-4780-a2f1-6236f24e591d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/artifacts/GeodeticCalculation.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_5_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_5_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_base_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_base_win_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_controls_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_controls_win_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_fxml_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_fxml_win_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_graphics_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_openjfx_javafx_graphics_win_13.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/club/magiccrazyman/geodetic/core/core/coordinatesystem/GeodeticCoordinateSystemTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/club/magiccrazyman/geodetic/core/core/coordinatesystem/projection/GaussKrugerProjectionCoordinateSystemTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gui/gui.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gui/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gui/src/main/java/club/magiccrazyman/geodetic/gui/UserInterfaceController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gui/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../gui/src/main/resources/UserInterface.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../GeodeticCalculation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../GeodeticCalculation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/club/magiccrazyman/geodetic/core/coordinatesystem/GeodeticCoordinateSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/club/magiccrazyman/geodetic/core/coordinatesystem/GeodeticCoordinateSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/club/magiccrazyman/geodetic/core/coordinatesystem/projection/GaussKrugerProjectionCoordinateSystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/club/magiccrazyman/geodetic/core/coordinatesystem/projection/GaussKrugerProjectionCoordinateSystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/club/magiccrazyman/geodetic/core/tools/CalculationTools.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/club/magiccrazyman/geodetic/core/tools/CalculationTools.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/club/magiccrazyman/geodetic/ui/UserInterface.fxml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/club/magiccrazyman/geodetic/ui/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/../gui/src/main/java/club/magiccrazyman/geodetic/gui/UserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../src/club/magiccrazyman/geodetic/ui/UserInterfaceController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test/club/magiccrazyman/geodetic/core/coordinatesystem/GeodeticCoordinateSystemTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test/club/magiccrazyman/geodetic/core/coordinatesystem/projection/GaussKrugerProjectionCoordinateSystemTest.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="CodeStyleSettingsInfer">
+    <option name="done" value="true" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectCodeStyleSettingsMigration">
+    <option name="version" value="1" />
+  </component>
+  <component name="ProjectId" id="1Vf21eFoxv0XVvD27TqL5uW9f2m" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="513bf63f-1922-4780-a2f1-6236f24e591d" name="Default Changelist" comment="" />
+      <created>1577629614220</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1577629614220</updated>
+    </task>
+    <servers />
+  </component>
+</project>

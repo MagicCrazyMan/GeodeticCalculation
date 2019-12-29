@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="club.magiccrazyman.geodetic.gui.UserInterfaceController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="10.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <AnchorPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <AnchorPane>
+               <children>
+                  <Label fx:id="systemLabel" layoutY="4.0" text="大地坐标系" />
+                  <ComboBox fx:id="systemComboBox" layoutX="66.0" prefHeight="23.0" prefWidth="406.0" />
+                  <RadioButton fx:id="showCalculation" layoutY="30.0" mnemonicParsing="false" onAction="#showCalculationActionPerformance" text="显示计算详情" />
+               </children>
+            </AnchorPane>
+            <TabPane fx:id="selectionTabPane" layoutY="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <tabs>
+                  <Tab fx:id="coordinateTransformTab" closable="false" text="坐标转换">
+                     <content>
+                        <AnchorPane style="-fx-border-style: solid; -fx-border-width: 0px 1px 1px 1px; -fx-border-color: #C7C7C7;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <children>
+                              <AnchorPane layoutX="5.0" layoutY="14.0">
+                                 <children>
+                                    <Label layoutY="4.0" text="大地坐标系坐标值" />
+                                    <Label layoutX="222.0" layoutY="4.0" text="迭代精度" />
+                                    <Label layoutX="435.0" layoutY="4.0" text="弧度" />
+                                    <Label layoutY="34.0" text="大地经度 L" />
+                                    <Label layoutY="64.0" text="大地纬度 B" />
+                                    <Label layoutX="5.0" layoutY="94.0" text="大地高 H" />
+                                    <Label layoutX="299.0" layoutY="24.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="24.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="26.0" text="&quot;" />
+                                    <Label layoutX="299.0" layoutY="54.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="54.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="56.0" text="&quot;" />
+                                    <Label layoutX="448.0" layoutY="94.0" text="米" />
+                                    <Button fx:id="inputMethodButton" layoutX="107.0" mnemonicParsing="false" onAction="#inputMethodButtonActionPerformed" text="弧度 / 角度" />
+                                    <TextField fx:id="precisionTextField" alignment="CENTER_RIGHT" layoutX="277.0" prefHeight="23.0" prefWidth="155.0" text="0.0000000000001" />
+                                    <TextField fx:id="longitudeTextField" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="30.0" />
+                                    <TextField fx:id="latitudeTextField" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="60.0" />
+                                    <Separator layoutX="233.0" layoutY="30.0" orientation="VERTICAL" prefHeight="52.0" />
+                                    <TextField fx:id="longitudeDegreeTextField" disable="true" layoutX="244.0" layoutY="30.0" prefHeight="23.0" prefWidth="50.0" style="-fx-border-width: 100;" />
+                                    <TextField fx:id="longitudeMinsTextField" disable="true" layoutX="309.0" layoutY="30.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="longitudeSecondsTextField" disable="true" layoutX="376.0" layoutY="30.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <TextField fx:id="latitudeDegreeTextField" disable="true" layoutX="244.0" layoutY="60.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeMinsTextField" disable="true" layoutX="309.0" layoutY="60.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeSecondsTextField" disable="true" layoutX="376.0" layoutY="60.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <TextField fx:id="heightTextField" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="90.0" prefHeight="23.0" prefWidth="380.0" />
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="5.0" layoutY="134.0" prefHeight="3.0" prefWidth="450.0" />
+                              <AnchorPane layoutX="5.0" layoutY="144.0">
+                                 <children>
+                                    <Label layoutY="94.0" text="Z轴坐标值" />
+                                    <Label layoutY="34.0" text="X轴坐标值" />
+                                    <Label layoutX="448.0" layoutY="34.0" text="米" />
+                                    <Label layoutY="4.0" text="空间直角坐标系坐标值" />
+                                    <TextField fx:id="axisXTextField" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="30.0" prefHeight="23.0" prefWidth="380.0" />
+                                    <TextField fx:id="axisYTextField" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="60.0" prefHeight="23.0" prefWidth="380.0" />
+                                    <Label layoutX="448.0" layoutY="94.0" text="米" />
+                                    <TextField fx:id="axisZTextField" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="90.0" prefHeight="23.0" prefWidth="380.0" />
+                                    <Label layoutX="448.0" layoutY="64.0" text="米" />
+                                    <Label layoutY="64.0" text="Y轴坐标值" />
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="5.0" layoutY="269.0" prefHeight="3.0" prefWidth="450.0" />
+                              <AnchorPane layoutX="5.0" layoutY="284.0">
+                                 <children>
+                                    <Button fx:id="spatial2GeoButton" layoutX="102.0" mnemonicParsing="false" onAction="#spatial2GeoButtonActionPerformed" prefHeight="23.0" prefWidth="180.0" text="空间直角坐标 -&gt; 大地坐标" />
+                                    <Button fx:id="geo2SpatialButton" layoutX="290.0" mnemonicParsing="false" onAction="#geo2SpatialButtonActionPerformed" text="大地坐标 -&gt; 空间直角坐标" />
+                                    <Button fx:id="clearButton" mnemonicParsing="false" onAction="#clearButtonActionPerformed" text="清空" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" right="5.0" />
+                           </padding>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="大地主题解算">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-style: solid; -fx-border-width: 0px 1px 1px 1px; -fx-border-color: #C7C7C7;">
+                           <children>
+                              <AnchorPane layoutX="5.0" layoutY="14.0">
+                                 <children>
+                                    <Label layoutY="4.0" text="大地主题解算" />
+                                    <TextField fx:id="precisionTextField2" alignment="CENTER_RIGHT" layoutX="277.0" prefHeight="23.0" prefWidth="155.0" text="0.0000000000001" />
+                                    <Label layoutX="435.0" layoutY="4.0" text="弧度" />
+                                    <Label layoutX="222.0" layoutY="4.0" text="迭代精度" />
+                                    <Button fx:id="inputMethodButton2" layoutX="80.0" mnemonicParsing="false" onAction="#inputMethodButtonActionPerformed" text="弧度 / 角度" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="5.0" layoutY="50.0">
+                                 <children>
+                                    <Separator layoutX="233.0" layoutY="20.0" orientation="VERTICAL" prefHeight="83.0" />
+                                    <Label layoutY="24.0" text="大地经度 L1" />
+                                    <TextField fx:id="longitudeTextField2" alignment="CENTER_RIGHT" layoutX="80.0" layoutY="20.0" prefHeight="23.0" prefWidth="145.0" />
+                                    <TextField fx:id="longitudeDegreeTextField2" disable="true" layoutX="244.0" layoutY="20.0" prefHeight="23.0" prefWidth="50.0" style="-fx-border-width: 100;" />
+                                    <TextField fx:id="longitudeMinsTextField2" disable="true" layoutX="309.0" layoutY="20.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="longitudeSecondsTextField2" disable="true" layoutX="376.0" layoutY="20.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <Label layoutX="299.0" layoutY="20.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="20.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="20.0" text="&quot;" />
+                                    <Label layoutY="54.0" text="大地纬度 B1" />
+                                    <TextField fx:id="latitudeTextField2" alignment="CENTER_RIGHT" layoutX="80.0" layoutY="50.0" prefHeight="23.0" prefWidth="145.0" />
+                                    <TextField fx:id="latitudeDegreeTextField2" disable="true" layoutX="244.0" layoutY="50.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeMinsTextField2" disable="true" layoutX="309.0" layoutY="50.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeSecondsTextField2" disable="true" layoutX="376.0" layoutY="50.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <Label layoutX="299.0" layoutY="50.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="50.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="50.0" text="&quot;" />
+                                    <Label layoutY="84.0" text="大地方位角 A1" />
+                                    <TextField fx:id="angleTextField2" alignment="CENTER_RIGHT" layoutX="80.0" layoutY="80.0" prefHeight="23.0" prefWidth="145.0" />
+                                    <TextField fx:id="angleDegreeTextField2" disable="true" layoutX="244.0" layoutY="80.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="angleMinsTextField2" disable="true" layoutX="309.0" layoutY="80.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="angleSecondsTextField2" disable="true" layoutX="376.0" layoutY="80.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <Label layoutX="451.0" layoutY="80.0" text="&quot;" />
+                                    <Label layoutX="364.0" layoutY="80.0" text="'" />
+                                    <Label layoutX="299.0" layoutY="80.0" text="°" />
+                                    <Label layoutX="222.0" text="起点" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="5.0" layoutY="170.0">
+                                 <children>
+                                    <Label layoutY="4.0" text="大地线 S" />
+                                    <TextField fx:id="geodeticLineTextField" alignment="CENTER_RIGHT" layoutX="50.0" prefWidth="230.0" />
+                                    <Label layoutX="285.0" layoutY="4.0" text="米" />
+                                    <Button fx:id="clearButton2" layoutX="312.0" mnemonicParsing="false" onAction="#clearButtonActionPerformed" text="清空" />
+                                    <Button fx:id="inverseSolutionButton" layoutX="365.0" mnemonicParsing="false" onAction="#inverseSolutionButtonClick" text="反算" />
+                                    <Button fx:id="directSolutionButton" layoutX="420.0" mnemonicParsing="false" onAction="#directSolutionButtonClick" text="正算" />
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane layoutX="5.0" layoutY="205.0">
+                                 <children>
+                                    <Separator layoutX="233.0" layoutY="20.0" orientation="VERTICAL" prefHeight="83.0" />
+                                    <Label layoutY="24.0" text="大地经度 L2" />
+                                    <TextField fx:id="longitudeTextField3" alignment="CENTER_RIGHT" layoutX="80.0" layoutY="20.0" prefHeight="23.0" prefWidth="145.0" />
+                                    <TextField fx:id="longitudeDegreeTextField3" disable="true" layoutX="244.0" layoutY="20.0" prefHeight="23.0" prefWidth="50.0" style="-fx-border-width: 100;" />
+                                    <TextField fx:id="longitudeMinsTextField3" disable="true" layoutX="309.0" layoutY="20.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="longitudeSecondsTextField3" disable="true" layoutX="376.0" layoutY="20.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <Label layoutX="299.0" layoutY="20.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="20.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="20.0" text="&quot;" />
+                                    <Label layoutY="54.0" text="大地纬度 B2" />
+                                    <TextField fx:id="latitudeTextField3" alignment="CENTER_RIGHT" layoutX="80.0" layoutY="50.0" prefHeight="23.0" prefWidth="145.0" />
+                                    <TextField fx:id="latitudeDegreeTextField3" disable="true" layoutX="244.0" layoutY="50.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeMinsTextField3" disable="true" layoutX="309.0" layoutY="50.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeSecondsTextField3" disable="true" layoutX="376.0" layoutY="50.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <Label layoutX="299.0" layoutY="50.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="50.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="50.0" text="&quot;" />
+                                    <Label layoutY="84.0" text="大地方位角 A2" />
+                                    <TextField fx:id="angleTextField3" alignment="CENTER_RIGHT" layoutX="80.0" layoutY="80.0" prefHeight="23.0" prefWidth="145.0" />
+                                    <TextField fx:id="angleDegreeTextField3" disable="true" layoutX="244.0" layoutY="80.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="angleMinsTextField3" disable="true" layoutX="309.0" layoutY="80.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="angleSecondsTextField3" disable="true" layoutX="376.0" layoutY="80.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <Label layoutX="451.0" layoutY="80.0" text="&quot;" />
+                                    <Label layoutX="364.0" layoutY="80.0" text="'" />
+                                    <Label layoutX="299.0" layoutY="80.0" text="°" />
+                                    <Label layoutX="222.0" text="终点" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+                  <Tab fx:id="projectionTransformTab" closable="false" text="高斯投影">
+                     <content>
+                        <AnchorPane style="-fx-border-style: solid; -fx-border-width: 0px 1px 1px 1px; -fx-border-color: #C7C7C7;">
+                           <children>
+                              <AnchorPane layoutX="5.0" layoutY="14.0">
+                                 <children>
+                                    <Label layoutY="4.0" text="大地坐标系坐标值" />
+                                    <Label layoutX="222.0" layoutY="4.0" text="迭代精度" />
+                                    <Label layoutX="435.0" layoutY="4.0" text="弧度" />
+                                    <Label layoutY="34.0" text="大地经度 L" />
+                                    <Label layoutY="64.0" text="大地纬度 B" />
+                                    <Label layoutX="299.0" layoutY="24.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="24.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="26.0" text="&quot;" />
+                                    <Label layoutX="299.0" layoutY="54.0" text="°" />
+                                    <Label layoutX="364.0" layoutY="54.0" text="'" />
+                                    <Label layoutX="451.0" layoutY="56.0" text="&quot;" />
+                                    <Button fx:id="inputMethodButton1" layoutX="107.0" mnemonicParsing="false" onAction="#inputMethodButtonActionPerformed" text="弧度 / 角度" />
+                                    <TextField fx:id="precisionTextField1" alignment="CENTER_RIGHT" layoutX="277.0" prefHeight="23.0" prefWidth="155.0" text="0.0000000000001" />
+                                    <TextField fx:id="longitudeTextField1" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="30.0" />
+                                    <TextField fx:id="latitudeTextField1" alignment="CENTER_RIGHT" layoutX="65.0" layoutY="60.0" />
+                                    <Separator layoutX="233.0" layoutY="30.0" orientation="VERTICAL" prefHeight="52.0" />
+                                    <TextField fx:id="longitudeDegreeTextField1" disable="true" layoutX="244.0" layoutY="30.0" prefHeight="23.0" prefWidth="50.0" style="-fx-border-width: 100;" />
+                                    <TextField fx:id="longitudeMinsTextField1" disable="true" layoutX="309.0" layoutY="30.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="longitudeSecondsTextField1" disable="true" layoutX="376.0" layoutY="30.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <TextField fx:id="latitudeDegreeTextField1" disable="true" layoutX="244.0" layoutY="60.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeMinsTextField1" disable="true" layoutX="309.0" layoutY="60.0" prefHeight="23.0" prefWidth="50.0" />
+                                    <TextField fx:id="latitudeSecondsTextField1" disable="true" layoutX="376.0" layoutY="60.0" prefHeight="23.0" prefWidth="69.0" />
+                                    <ChoiceBox fx:id="NorS" disable="true" layoutY="90.0" prefHeight="23.0" prefWidth="80.0" />
+                                    <ChoiceBox fx:id="EorW" disable="true" layoutX="89.0" layoutY="90.0" prefHeight="23.0" prefWidth="80.0" />
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="5.0" layoutY="134.0" prefHeight="3.0" prefWidth="450.0" />
+                              <AnchorPane layoutX="5.0" layoutY="144.0">
+                                 <children>
+                                    <Label layoutY="4.0" text="投影坐标值" />
+                                    <Button fx:id="trueOrFalseButton" layoutX="73.0" mnemonicParsing="false" onAction="#trueOrFalseButtonClick" text="偏移值 / 真值" />
+                                    <Label layoutY="34.0" text="分度带" />
+                                    <TextField fx:id="indexTextField" alignment="CENTER" editable="false" focusTraversable="false" layoutX="46.0" layoutY="30.0" prefHeight="23.0" prefWidth="29.0" />
+                                    <Label layoutX="80.0" layoutY="34.0" text="°" />
+                                    <Label layoutX="100.0" layoutY="34.0" text="中央子午线" />
+                                    <TextField fx:id="centralMeridianTextField" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" layoutX="170.0" layoutY="30.0" prefHeight="23.0" prefWidth="93.0" />
+                                    <Label layoutY="64.0" text="X轴偏移坐标值" />
+                                    <TextField fx:id="projectionAxisXTextField1" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
+                                    <Label layoutX="220.0" layoutY="64.0" text="米" />
+                                    <Label layoutY="94.0" text="Y轴偏移坐标值" />
+                                    <TextField fx:id="projectionAxisYTextField1" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="90.0" prefHeight="23.0" prefWidth="130.0" promptText="若有带号会加上带号" />
+                                    <Label layoutX="220.0" layoutY="94.0" text="米" />
+                                    <Label layoutX="240.0" layoutY="64.0" text="X轴真坐标值" />
+                                    <TextField fx:id="projectionAxisXTextField2" alignment="CENTER_RIGHT" disable="true" layoutX="314.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
+                                    <Label layoutX="448.0" layoutY="64.0" text="米" />
+                                    <Label layoutX="240.0" layoutY="94.0" text="Y轴真坐标值" />
+                                    <TextField fx:id="projectionAxisYTextField2" alignment="CENTER_RIGHT" disable="true" layoutX="314.0" layoutY="90.0" prefHeight="23.0" prefWidth="130.0" />
+                                    <Label layoutX="448.0" layoutY="94.0" text="米" />
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="5.0" layoutY="269.0" prefHeight="3.0" prefWidth="450.0" />
+                              <AnchorPane layoutX="5.0" layoutY="284.0">
+                                 <children>
+                                    <Button fx:id="proj2GeoButton" layoutX="179.0" mnemonicParsing="false" onAction="#proj2GeoButtonActionPerformed" text="投影坐标 -&gt; 大地坐标" />
+                                    <Button fx:id="geo2ProjButton" layoutX="325.0" mnemonicParsing="false" onAction="#geo2ProjButtonActionPerformed" text="大地坐标 -&gt; 投影坐标" />
+                                    <Button fx:id="clearButton1" mnemonicParsing="false" onAction="#clearButtonActionPerformed" text="清空" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" right="5.0" />
+                           </padding>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab closable="false" text="高斯投影领带转换">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-style: solid; -fx-border-width: 0px 1px 1px 1px; -fx-border-color: #C7C7C7;">
+                           <children>
+                              <AnchorPane layoutX="5.0" layoutY="14.0">
+                                 <children>
+                                    <Label layoutY="4.0" text="投影坐标值" />
+                                    <Button fx:id="trueOrFalseButton1" layoutX="73.0" mnemonicParsing="false" onAction="#trueOrFalseButtonClick" text="偏移值 / 真值" />
+                                    <Label layoutY="34.0" text="分度带" />
+                                    <TextField fx:id="indexTextField1" alignment="CENTER" editable="false" focusTraversable="false" layoutX="46.0" layoutY="30.0" prefHeight="23.0" prefWidth="29.0" />
+                                    <Label layoutX="80.0" layoutY="34.0" text="°" />
+                                    <Label layoutX="100.0" layoutY="34.0" text="中央子午线" />
+                                    <TextField fx:id="centralMeridianTextField1" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" layoutX="170.0" layoutY="30.0" prefHeight="23.0" prefWidth="93.0" />
+                                    <Label layoutY="64.0" text="X轴偏移坐标值" />
+                                    <TextField fx:id="projectionAxisXTextField11" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
+                                    <Label layoutX="220.0" layoutY="64.0" text="米" />
+                                    <Label layoutY="94.0" text="Y轴偏移坐标值" />
+                                    <TextField fx:id="projectionAxisYTextField11" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="90.0" prefHeight="23.0" prefWidth="130.0" promptText="若有带号会加上带号" />
+                                    <Label layoutX="220.0" layoutY="94.0" text="米" />
+                                    <Label layoutX="240.0" layoutY="64.0" text="X轴真坐标值" />
+                                    <TextField fx:id="projectionAxisXTextField21" alignment="CENTER_RIGHT" disable="true" layoutX="314.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
+                                    <Label layoutX="448.0" layoutY="64.0" text="米" />
+                                    <Label layoutX="240.0" layoutY="94.0" text="Y轴真坐标值" />
+                                    <TextField fx:id="projectionAxisYTextField21" alignment="CENTER_RIGHT" disable="true" layoutX="314.0" layoutY="90.0" prefHeight="23.0" prefWidth="130.0" />
+                                    <Label layoutX="448.0" layoutY="94.0" text="米" />
+                                    <TextField fx:id="precisionTextField11" alignment="CENTER_RIGHT" layoutX="277.0" prefHeight="23.0" prefWidth="155.0" text="0.0000000000001" />
+                                    <Label layoutX="435.0" layoutY="4.0" text="弧度" />
+                                    <Label layoutX="222.0" layoutY="4.0" text="迭代精度" />
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="5.0" layoutY="135.0" prefHeight="3.0" prefWidth="450.0" />
+                              <AnchorPane layoutX="5.0" layoutY="150.0">
+                                 <children>
+                                    <Label fx:id="systemLabel1" layoutY="4.0" text="目标投影坐标系" />
+                                    <ComboBox fx:id="systemComboBox1" layoutX="90.0" prefHeight="23.0" prefWidth="370.0" />
+                                    <AnchorPane layoutY="30.0">
+                                       <children>
+                                          <Label layoutY="4.0" text="分度带" />
+                                          <TextField fx:id="indexTextField11" alignment="CENTER" editable="false" focusTraversable="false" layoutX="46.0" prefHeight="23.0" prefWidth="29.0" />
+                                          <Label layoutX="80.0" layoutY="4.0" text="°" />
+                                          <Label layoutX="100.0" layoutY="4.0" text="中央子午线" />
+                                          <TextField fx:id="centralMeridianTextField11" alignment="CENTER_RIGHT" editable="false" focusTraversable="false" layoutX="170.0" prefHeight="23.0" prefWidth="93.0" />
+                                          <Label layoutY="34.0" text="X轴偏移坐标值" />
+                                          <TextField fx:id="projectionAxisXTextField111" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="30.0" prefHeight="23.0" prefWidth="130.0" />
+                                          <Label layoutX="220.0" layoutY="34.0" text="米" />
+                                          <Label layoutY="64.0" text="Y轴偏移坐标值" />
+                                          <TextField fx:id="projectionAxisYTextField111" alignment="CENTER_RIGHT" layoutX="85.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" promptText="若有带号会加上带号" />
+                                          <Label layoutX="220.0" layoutY="64.0" text="米" />
+                                          <Label layoutX="240.0" layoutY="34.0" text="X轴真坐标值" />
+                                          <TextField fx:id="projectionAxisXTextField211" alignment="CENTER_RIGHT" layoutX="314.0" layoutY="30.0" prefHeight="23.0" prefWidth="130.0" />
+                                          <Label layoutX="448.0" layoutY="34.0" text="米" />
+                                          <Label layoutX="240.0" layoutY="64.0" text="Y轴真坐标值" />
+                                          <TextField fx:id="projectionAxisYTextField211" alignment="CENTER_RIGHT" layoutX="314.0" layoutY="60.0" prefHeight="23.0" prefWidth="130.0" />
+                                          <Label layoutX="448.0" layoutY="64.0" text="米" />
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                              <Separator layoutX="5.0" layoutY="270.0" prefHeight="3.0" prefWidth="450.0" />
+                              <AnchorPane layoutX="5.0" layoutY="280.0" prefHeight="10.0" prefWidth="10.0">
+                                 <children>
+                                    <Button fx:id="gaussProjectionTransformButton" layoutX="420.0" mnemonicParsing="false" onAction="#gaussProjectionTransformButtonClick" text="转换" />
+                                    <Button fx:id="clearButton11" mnemonicParsing="false" onAction="#clearButtonActionPerformed" text="清空" />
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </children>
+</GridPane>
