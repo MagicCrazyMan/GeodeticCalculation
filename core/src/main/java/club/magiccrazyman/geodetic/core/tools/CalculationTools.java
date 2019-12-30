@@ -12,40 +12,40 @@ public class CalculationTools {
     /**
      * 弧度转换角度工具
      *
-     * @param arc 弧度
+     * @param radians 弧度
      * @return 角度，单位：十进制度
      */
-    public static double rad2Degree(double arc) {
-        return unitConversion(arc, 0);
+    public static double radians2Degrees(double radians) {
+        return unitConversion(radians, 0);
     }
 
     /**
      * 角度转换弧度工具
      *
-     * @param degree 角度值，单位：十进制度
+     * @param degrees 角度值，单位：十进制度
      * @return 弧度
      */
-    public static double degree2Rad(double degree) {
-        return unitConversion(degree, 1);
+    public static double degrees2Radians(double degrees) {
+        return unitConversion(degrees, 1);
     }
 
     /**
      * 角度值字符串格式化工具
      *
-     * @param degree 角度值，单位：十进制度
+     * @param degrees 角度值，单位：十进制度
      * @return 格式化字符串
      */
-    public static String degreeFormatter(double degree) {
-        BigDecimal bg = new BigDecimal(degree);
-        degree = bg.setScale(8, RoundingMode.HALF_UP).doubleValue();
+    public static String degreesFormatter(double degrees) {
+        BigDecimal bg = new BigDecimal(degrees);
+        degrees = bg.setScale(8, RoundingMode.HALF_UP).doubleValue();
         boolean negative = false;
-        if (degree < 0) {
+        if (degrees < 0) {
             negative = true;
-            degree = Math.abs(degree);
+            degrees = Math.abs(degrees);
         }
-        int d = (int) degree;
-        int m = (int) ((degree - d) * 60);
-        double s = (degree - d) * 3600 - m * 60;
+        int d = (int) degrees;
+        int m = (int) ((degrees - d) * 60);
+        double s = (degrees - d) * 3600 - m * 60;
 
         return String.format("%s°%d'%.4f\"", negative ? "-" + d : d, m, s);
     }
