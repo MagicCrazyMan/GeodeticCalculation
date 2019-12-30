@@ -505,8 +505,8 @@ public class UserInterfaceController {
             latitudeTextField.setText(String.valueOf(LBHC.get(1)));
             heightTextField.setText(String.format("%.4f", LBHC.get(2)));
 
-            String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBHC.get(0)));
-            String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBHC.get(1)));
+            String longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(LBHC.get(0)));
+            String latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(LBHC.get(1)));
             setDegreeTextField(longitude, latitude, 0);
 
             if (processPane != null) {
@@ -541,8 +541,8 @@ public class UserInterfaceController {
                 B = Double.parseDouble(latitudeTextField.getText());
                 H = Double.parseDouble(heightTextField.getText());
 
-                String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(L));
-                String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(B));
+                String longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(L));
+                String latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(B));
                 setDegreeTextField(longitude, latitude, 0);
             } else {
                 //角度转换为弧度
@@ -550,18 +550,18 @@ public class UserInterfaceController {
                 double mins1 = longitudeMinsTextField.getText().isEmpty() ? 0 : Double.parseDouble(longitudeMinsTextField.getText()) / 60.0;
                 double second1 = longitudeSecondsTextField.getText().isEmpty() ? 0 : Double.parseDouble(longitudeSecondsTextField.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    L = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    L = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    L = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    L = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 double degree2 = latitudeDegreeTextField.getText().isEmpty() ? 0 : Double.parseDouble(latitudeDegreeTextField.getText());
                 double mins2 = latitudeMinsTextField.getText().isEmpty() ? 0 : Double.parseDouble(latitudeMinsTextField.getText()) / 60.0;
                 double second2 = latitudeSecondsTextField.getText().isEmpty() ? 0 : Double.parseDouble(latitudeSecondsTextField.getText()) / 3600.0;
                 if (degree2 < 0) {
-                    B = CalculationTools.degree2Rad(-(Math.abs(degree2) + mins2 + second2));
+                    B = CalculationTools.degrees2Radians(-(Math.abs(degree2) + mins2 + second2));
                 } else {
-                    B = CalculationTools.degree2Rad(degree2 + mins2 + second2);
+                    B = CalculationTools.degrees2Radians(degree2 + mins2 + second2);
                 }
 
                 H = Double.parseDouble(heightTextField.getText());
@@ -786,8 +786,8 @@ public class UserInterfaceController {
             longitudeTextField1.setText(String.valueOf(LBlffC.get(0)));
             latitudeTextField1.setText(String.valueOf(LBlffC.get(1)));
 
-            String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlffC.get(0)));
-            String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlffC.get(1)));
+            String longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(LBlffC.get(0)));
+            String latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(LBlffC.get(1)));
             setDegreeTextField(longitude, latitude, 1);
 
             if (LBlffC.get(0) > 0) {
@@ -825,8 +825,8 @@ public class UserInterfaceController {
                 L = Double.parseDouble(longitudeTextField1.getText());
                 B = Double.parseDouble(latitudeTextField1.getText());
 
-                String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(L));
-                String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(B));
+                String longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(L));
+                String latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(B));
                 setDegreeTextField(longitude, latitude, 1);
             } else {
                 //角度转换为弧度
@@ -834,18 +834,18 @@ public class UserInterfaceController {
                 double mins1 = longitudeMinsTextField1.getText().isEmpty() ? 0 : Double.parseDouble(longitudeMinsTextField1.getText()) / 60.0;
                 double second1 = longitudeSecondsTextField1.getText().isEmpty() ? 0 : Double.parseDouble(longitudeSecondsTextField1.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    L = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    L = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    L = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    L = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 double degree2 = latitudeDegreeTextField1.getText().isEmpty() ? 0 : Double.parseDouble(latitudeDegreeTextField1.getText());
                 double mins2 = latitudeMinsTextField1.getText().isEmpty() ? 0 : Double.parseDouble(latitudeMinsTextField1.getText()) / 60.0;
                 double second2 = latitudeSecondsTextField1.getText().isEmpty() ? 0 : Double.parseDouble(latitudeSecondsTextField1.getText()) / 3600.0;
                 if (degree2 < 0) {
-                    B = CalculationTools.degree2Rad(-(Math.abs(degree2) + mins2 + second2));
+                    B = CalculationTools.degrees2Radians(-(Math.abs(degree2) + mins2 + second2));
                 } else {
-                    B = CalculationTools.degree2Rad(degree2 + mins2 + second2);
+                    B = CalculationTools.degrees2Radians(degree2 + mins2 + second2);
                 }
 
                 longitudeTextField1.setText(String.valueOf(L));
@@ -935,9 +935,9 @@ public class UserInterfaceController {
                 B = Double.parseDouble(latitudeTextField2.getText());
                 A = Double.parseDouble(angleTextField2.getText());
 
-                String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(L));
-                String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(B));
-                String angle = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(A));
+                String longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(L));
+                String latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(B));
+                String angle = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(A));
 
                 String[] str = getSplitDegree(longitude);
                 longitudeDegreeTextField2.setText(str[0]);
@@ -959,27 +959,27 @@ public class UserInterfaceController {
                 double mins1 = longitudeMinsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(longitudeMinsTextField2.getText()) / 60.0;
                 double second1 = longitudeSecondsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(longitudeSecondsTextField2.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    L = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    L = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    L = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    L = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 degree1 = latitudeDegreeTextField2.getText().isEmpty() ? 0 : Double.parseDouble(latitudeDegreeTextField2.getText());
                 mins1 = latitudeMinsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(latitudeMinsTextField2.getText()) / 60.0;
                 second1 = latitudeSecondsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(latitudeSecondsTextField2.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    B = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    B = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    B = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    B = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 degree1 = angleDegreeTextField2.getText().isEmpty() ? 0 : Double.parseDouble(angleDegreeTextField2.getText());
                 mins1 = angleMinsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(angleMinsTextField2.getText()) / 60.0;
                 second1 = angleSecondsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(angleSecondsTextField2.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    A = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    A = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    A = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    A = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 longitudeTextField2.setText(String.valueOf(L));
@@ -995,17 +995,17 @@ public class UserInterfaceController {
             latitudeTextField3.setText(String.valueOf(values.get(1)));
             angleTextField3.setText(String.valueOf(values.get(2)));
 
-            String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(0))));
+            String[] str = getSplitDegree(CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(values.get(0))));
             longitudeDegreeTextField3.setText(str[0]);
             longitudeMinsTextField3.setText(str[1]);
             longitudeSecondsTextField3.setText(str[2]);
 
-            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(1))));
+            str = getSplitDegree(CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(values.get(1))));
             latitudeDegreeTextField3.setText(str[0]);
             latitudeMinsTextField3.setText(str[1]);
             latitudeSecondsTextField3.setText(str[2]);
 
-            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(2))));
+            str = getSplitDegree(CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(values.get(2))));
             angleDegreeTextField3.setText(str[0]);
             angleMinsTextField3.setText(str[1]);
             angleSecondsTextField3.setText(str[2]);
@@ -1027,8 +1027,8 @@ public class UserInterfaceController {
                 L2 = Double.parseDouble(longitudeTextField3.getText());
                 B2 = Double.parseDouble(latitudeTextField3.getText());
 
-                String longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(L1));
-                String latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(B1));
+                String longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(L1));
+                String latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(B1));
 
                 String[] str = getSplitDegree(longitude);
                 longitudeDegreeTextField2.setText(str[0]);
@@ -1040,8 +1040,8 @@ public class UserInterfaceController {
                 latitudeMinsTextField2.setText(str[1]);
                 latitudeSecondsTextField2.setText(str[2]);
 
-                longitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(L2));
-                latitude = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(B2));
+                longitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(L2));
+                latitude = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(B2));
 
                 str = getSplitDegree(longitude);
                 longitudeDegreeTextField3.setText(str[0]);
@@ -1058,36 +1058,36 @@ public class UserInterfaceController {
                 double mins1 = longitudeMinsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(longitudeMinsTextField2.getText()) / 60.0;
                 double second1 = longitudeSecondsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(longitudeSecondsTextField2.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    L1 = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    L1 = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    L1 = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    L1 = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 degree1 = latitudeDegreeTextField2.getText().isEmpty() ? 0 : Double.parseDouble(latitudeDegreeTextField2.getText());
                 mins1 = latitudeMinsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(latitudeMinsTextField2.getText()) / 60.0;
                 second1 = latitudeSecondsTextField2.getText().isEmpty() ? 0 : Double.parseDouble(latitudeSecondsTextField2.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    B1 = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    B1 = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    B1 = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    B1 = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 degree1 = longitudeDegreeTextField3.getText().isEmpty() ? 0 : Double.parseDouble(longitudeDegreeTextField3.getText());
                 mins1 = longitudeMinsTextField3.getText().isEmpty() ? 0 : Double.parseDouble(longitudeMinsTextField3.getText()) / 60.0;
                 second1 = longitudeSecondsTextField3.getText().isEmpty() ? 0 : Double.parseDouble(longitudeSecondsTextField3.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    L2 = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    L2 = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    L2 = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    L2 = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 degree1 = latitudeDegreeTextField3.getText().isEmpty() ? 0 : Double.parseDouble(latitudeDegreeTextField3.getText());
                 mins1 = latitudeMinsTextField3.getText().isEmpty() ? 0 : Double.parseDouble(latitudeMinsTextField3.getText()) / 60.0;
                 second1 = latitudeSecondsTextField3.getText().isEmpty() ? 0 : Double.parseDouble(latitudeSecondsTextField3.getText()) / 3600.0;
                 if (degree1 < 0) {
-                    B2 = CalculationTools.degree2Rad(-(Math.abs(degree1) + mins1 + second1));
+                    B2 = CalculationTools.degrees2Radians(-(Math.abs(degree1) + mins1 + second1));
                 } else {
-                    B2 = CalculationTools.degree2Rad(degree1 + mins1 + second1);
+                    B2 = CalculationTools.degrees2Radians(degree1 + mins1 + second1);
                 }
 
                 longitudeTextField2.setText(String.valueOf(L1));
@@ -1104,12 +1104,12 @@ public class UserInterfaceController {
             angleTextField3.setText(String.format("%.16f", values.get(1)));
             geodeticLineTextField.setText(String.format("%.4f", values.get(2)));
 
-            String[] str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(0))));
+            String[] str = getSplitDegree(CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(values.get(0))));
             angleDegreeTextField2.setText(str[0]);
             angleMinsTextField2.setText(str[1]);
             angleSecondsTextField2.setText(str[2]);
 
-            str = getSplitDegree(CalculationTools.degreeFormatter(CalculationTools.rad2Degree(values.get(1))));
+            str = getSplitDegree(CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(values.get(1))));
             angleDegreeTextField3.setText(str[0]);
             angleMinsTextField3.setText(str[1]);
             angleSecondsTextField3.setText(str[2]);

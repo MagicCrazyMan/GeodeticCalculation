@@ -109,7 +109,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         ArrayList<Double> list = new ArrayList<>();
 
         double X, l, N, t, eit2, x, y, xz, yz;
-        l = L - CalculationTools.degree2Rad(centralMeridian); //计算坐标点与中央子午线的经差
+        l = L - CalculationTools.degrees2Radians(centralMeridian); //计算坐标点与中央子午线的经差
         X = geodeticCoordinateSystem.calculateMeridianArc(B); //根据大地纬度计算子午线弧长
         t = Math.tan(B); //t = atan(B)
         eit2 = geodeticCoordinateSystem.getDE2() * Math.pow(Math.cos(B), 2); //η^2 = e'^2 * cos(B)^2
@@ -182,7 +182,7 @@ public class GaussKrugerProjectionCoordinateSystem {
         l = y / (Nf * Math.cos(Bf)) -
                 (1 + 2 * Math.pow(tf, 2) + eit2f) * Math.pow(y, 3) / (6 * Math.pow(Nf, 3) * Math.cos(Bf)) +
                 (5 + 28 * Math.pow(tf, 2) + 24 * Math.pow(tf, 4) + 6 * eit2f + 8 * eit2f * Math.pow(tf, 2)) * Math.pow(y, 5) / (120 * Math.pow(Nf, 5) * Math.cos(Bf));
-        L = l + CalculationTools.degree2Rad(centralMeridian);
+        L = l + CalculationTools.degrees2Radians(centralMeridian);
 
         list.add(L);
         list.add(B);

@@ -237,11 +237,11 @@ public class GeodeticCoordinateSystem {
         tanlambda = Math.tan(lambda);
         lambda = Math.abs(lambda);
         if (sinA1 > 0 && tanlambda < 0) {
-            lambda = CalculationTools.degree2Rad(180) - lambda;
+            lambda = CalculationTools.degrees2Radians(180) - lambda;
         } else if (sinA1 < 0 && tanlambda < 0) {
             lambda = -lambda;
         } else if (sinA1 < 0 && tanlambda > 0) {
-            lambda = lambda - CalculationTools.degree2Rad(180);
+            lambda = lambda - CalculationTools.degrees2Radians(180);
         }
 
         L2 = L1 + lambda - delta;
@@ -251,11 +251,11 @@ public class GeodeticCoordinateSystem {
         //判断A2取值
         A2 = Math.abs(A2);
         if (sinA1 < 0 && tanA2 < 0) {
-            A2 = CalculationTools.degree2Rad(180) - A2;
+            A2 = CalculationTools.degrees2Radians(180) - A2;
         } else if (sinA1 > 0 && tanA2 > 0) {
-            A2 = CalculationTools.degree2Rad(180) + A2;
+            A2 = CalculationTools.degrees2Radians(180) + A2;
         } else if (sinA1 > 0 && tanA2 < 0) {
-            A2 = CalculationTools.degree2Rad(360) - A2;
+            A2 = CalculationTools.degrees2Radians(360) - A2;
         }
 
         list.add(L2);
@@ -307,11 +307,11 @@ public class GeodeticCoordinateSystem {
 
             A1 = Math.abs(A1);
             if (p > 0 && q < 0) {
-                A1 = CalculationTools.degree2Rad(180) - A1;
+                A1 = CalculationTools.degrees2Radians(180) - A1;
             } else if (p < 0 && q < 0) {
-                A1 = CalculationTools.degree2Rad(180) + A1;
+                A1 = CalculationTools.degrees2Radians(180) + A1;
             } else if (p < 0 && q > 0) {
-                A1 = CalculationTools.degree2Rad(360) - A1;
+                A1 = CalculationTools.degrees2Radians(360) - A1;
             }
 
             sinO = p * Math.sin(A1) + q * Math.cos(A1);
@@ -320,7 +320,7 @@ public class GeodeticCoordinateSystem {
 
             sigma = Math.abs(sigma);
             if (cosO < 0) {
-                sigma = CalculationTools.degree2Rad(180) - sigma;
+                sigma = CalculationTools.degrees2Radians(180) - sigma;
             }
 
             sinA0 = cosu1 * Math.sin(A1);
@@ -346,8 +346,8 @@ public class GeodeticCoordinateSystem {
 
         //计算反方位角
         A2 = Math.atan(cosu1 * Math.sin(lambda) / (b1 * Math.cos(lambda) - b2));
-        if (A1 < CalculationTools.degree2Rad(180)) {
-            A2 += CalculationTools.degree2Rad(180);
+        if (A1 < CalculationTools.degrees2Radians(180)) {
+            A2 += CalculationTools.degrees2Radians(180);
         }
 
         list.add(A1);
