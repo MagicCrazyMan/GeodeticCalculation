@@ -1,8 +1,12 @@
 package club.magiccrazyman.geodetic.core.coordinatesystem;
 
 import club.magiccrazyman.geodetic.core.tools.CalculationTools;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 
-import java.util.ArrayList;
+import java.util.*;
 
 /**
  * 大地坐标系
@@ -16,30 +20,80 @@ import java.util.ArrayList;
  */
 public class GeodeticCoordinateSystem {
 
+    private static HashMap<Integer, GeodeticCoordinateSystem> systems;
+
+    public static GeodeticCoordinateSystem getSystemById(int id) {
+        if (systems == null) {
+            initSystemsFromXML();
+        }
+        return systems.get(id);
+    }
+
+    public static Collection<GeodeticCoordinateSystem> getSystems(){
+        if(systems == null){
+            initSystemsFromXML();
+        }
+        return systems.values();
+    }
+
+    private static void initSystemsFromXML() {
+        try {
+            systems = new HashMap<>();
+
+            SAXReader saxReader = new SAXReader();
+            Document document = saxReader.read(GeodeticCoordinateSystem.class.getResource("/resource/goordinateSystems/geodetic/systems.xml"));
+            Element systemsXML = document.getRootElement();
+            for (Iterator<Element> it = systemsXML.elementIterator("system"); it.hasNext(); ) {
+                Element systemXML = it.next();
+                int id = Integer.parseInt(systemXML.element("id").getText());
+                String referenceEllipsoidName = systemXML.element("referenceEllipsoidName").getText();
+                String name = systemXML.element("names").element("zh_cn").getText();
+                double primeMerdian = Double.parseDouble(systemXML.element("primeMeridian").getText());
+                double semimajorAxis = Double.parseDouble(systemXML.element("semimajorAxis").getText());
+                double semiminorAxis = Double.parseDouble(systemXML.element("semiminorAxis").getText());
+
+                GeodeticCoordinateSystem system = new GeodeticCoordinateSystem(semimajorAxis, semiminorAxis, primeMerdian, name,id,referenceEllipsoidName);
+                systems.put(id, system);
+            }
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 椭圆长半轴
      */
-    private final double a;
+    private final double semimajorAxis;
 
     /**
      * 椭圆短半轴
      */
-    private final double b;
+    private final double semiminorAxis;
 
     /**
      * 极点处的子午线曲率半径
      */
-    private final double c;
+    private final double poleCurvatureRadius;
+
+    /**
+     * 椭球扁率α
+     */
+    private final double flattening;
 
     /**
      * 椭圆第一偏心率
      */
-    private final double e2;
+    private final double firstEccentricity;
 
     /**
      * 椭球第二偏心率
      */
-    private final double de2;
+    private final double secondEccentricity;
+
+    /**
+     * 大地坐标系起始子午线
+     */
+    private final double primeMeridian;
 
     /**
      * 大地坐标系名称
@@ -47,20 +101,50 @@ public class GeodeticCoordinateSystem {
     private final String name;
 
     /**
+     * 大地坐标系ID
+     */
+    private final int id;
+
+    /**
+     * 大地坐标系椭球体名称
+     */
+    private final String referenceEllipsoidName;
+
+    /**
      * 大地坐标系构造器，通过输入椭圆长半轴a及短半轴b创建一个新的大地坐标系
      *
-     * @param a    椭圆长半轴
-     * @param b    椭圆短半轴
-     * @param name 大地坐标系名称
+     * @param semimajorAxis          椭圆长半轴
+     * @param semiminorAxis          椭圆短半轴
+     * @param primeMeridian          大地坐标系起始子午线
+     * @param name                   大地坐标系名称
+     * @param id                     大地坐标系ID
+     * @param referenceEllipsoidName 大地坐标系椭球体名称
      */
-    public GeodeticCoordinateSystem(double a, double b, String name) {
-        this.a = a;
-        this.b = b;
-        this.c = Math.pow(a, 2) / b;
-        double v = Math.pow(a, 2) - Math.pow(b, 2);
-        this.e2 = v / Math.pow(a, 2);
-        this.de2 = v / Math.pow(b, 2);
+    public GeodeticCoordinateSystem(double semimajorAxis, double semiminorAxis, double primeMeridian, String name, int id, String referenceEllipsoidName) {
+        this.semimajorAxis = semimajorAxis;
+        this.semiminorAxis = semiminorAxis;
+        this.poleCurvatureRadius = Math.pow(semimajorAxis, 2) / semiminorAxis;
+        this.flattening = (semiminorAxis - semiminorAxis) / semimajorAxis;
+        double v = Math.pow(semimajorAxis, 2) - Math.pow(semiminorAxis, 2);
+        this.firstEccentricity = v / Math.pow(semimajorAxis, 2);
+        this.secondEccentricity = v / Math.pow(semiminorAxis, 2);
+        this.primeMeridian = primeMeridian;
         this.name = name;
+        this.id = id;
+        this.referenceEllipsoidName = referenceEllipsoidName;
+    }
+
+    /**
+     * 大地坐标系构造器，通过输入椭圆长半轴a及短半轴b创建一个新的大地坐标系
+     *
+     * @param semimajorAxis 椭圆长半轴
+     * @param semiminorAxis 椭圆短半轴
+     * @param primeMeridian 大地坐标系起始子午线
+     * @param name          大地坐标系名称
+     * @see GeodeticCoordinateSystem#GeodeticCoordinateSystem(double, double, double, String, int, String)
+     */
+    public GeodeticCoordinateSystem(double semimajorAxis, double semiminorAxis, double primeMeridian, String name) {
+        this(semimajorAxis, semiminorAxis, primeMeridian, name, 10000 + (int) (Math.random() * 10000), "Unknown");
     }
 
     /**
@@ -90,8 +174,8 @@ public class GeodeticCoordinateSystem {
         B = Bi.get(Bi.size() - 1);
 
         //H = Z / sinB - N * (1 -e^2)
-        N = a / (Math.sqrt(1 - e2 * Math.pow(Math.sin(B), 2)));
-        H = Z / Math.sin(B) - N * (1 - e2);
+        N = semimajorAxis / (Math.sqrt(1 - firstEccentricity * Math.pow(Math.sin(B), 2)));
+        H = Z / Math.sin(B) - N * (1 - firstEccentricity);
 
         list.add(L);
         list.add(B);
@@ -116,8 +200,8 @@ public class GeodeticCoordinateSystem {
     public ArrayList<Double> calculateGeodeticLatitudeFromSpatialSystem(double X, double Y, double Z, double precision) {
         double tanB1 = Z / Math.hypot(X, Y);
         double t0 = Z / Math.hypot(X, Y);
-        double p = c * e2 / Math.hypot(X, Y);
-        double k = 1 + de2;
+        double p = poleCurvatureRadius * firstEccentricity / Math.hypot(X, Y);
+        double k = 1 + secondEccentricity;
         return this.calculateGeodeticLatitudeFromSpatialSystemIteration(precision, tanB1, t0, p, k, new ArrayList<>());
     }
 
@@ -169,14 +253,14 @@ public class GeodeticCoordinateSystem {
         double N, X, Y, Z;
 
         //X = (N + H) * cosB * cosL
-        N = a / (Math.sqrt(1 - e2 * Math.pow(Math.sin(B), 2)));
+        N = semimajorAxis / (Math.sqrt(1 - firstEccentricity * Math.pow(Math.sin(B), 2)));
         X = (N + H) * Math.cos(B) * Math.cos(L);
 
         //Y = (N + H) * cosB * sinL
         Y = (N + H) * Math.cos(B) * Math.sin(L);
 
         //Z = (H * (1 - e^2) + H) * sinB
-        Z = (N * (1 - e2) + H) * Math.sin(B);
+        Z = (N * (1 - firstEccentricity) + H) * Math.sin(B);
 
         list.add(X);
         list.add(Y);
@@ -199,9 +283,9 @@ public class GeodeticCoordinateSystem {
         ArrayList<Double> list = new ArrayList<>();
         double W1, sinu1, cosu1, sinA0, cosA0, cotO1, sin2O1, cos2O1, sin2O0, cos2O0, sigma0, sigma, k2, A, B, C, alpha, beta, delta, sinu2, B2, lambda, sinA1, tanlambda, L2, A2, tanA2;
         //计算起点的归化纬度归化纬度
-        W1 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B1), 2));
+        W1 = Math.sqrt(1 - firstEccentricity * Math.pow(Math.sin(B1), 2));
 
-        sinu1 = Math.sin(B1) * Math.sqrt(1 - e2) / W1;
+        sinu1 = Math.sin(B1) * Math.sqrt(1 - firstEccentricity) / W1;
         cosu1 = Math.cos(B1) / W1;
 
         //计算辅助函数值
@@ -213,10 +297,10 @@ public class GeodeticCoordinateSystem {
         cos2O1 = (Math.pow(cotO1, 2) - 1) / (Math.pow(cotO1, 2) + 1);
 
         //计算球面长度
-        k2 = de2 * Math.pow(cosA0, 2);
-        A = b * (1 + k2 / 4 - 3 * Math.pow(k2, 2) / 64 + 5 * Math.pow(k2, 3) / 256);
-        B = b * (k2 / 8 - Math.pow(k2, 2) / 32 + 15 * Math.pow(k2, 3) / 1024);
-        C = b * (Math.pow(k2, 2) / 128 - 3 * Math.pow(k2, 3) / 512);
+        k2 = secondEccentricity * Math.pow(cosA0, 2);
+        A = semiminorAxis * (1 + k2 / 4 - 3 * Math.pow(k2, 2) / 64 + 5 * Math.pow(k2, 3) / 256);
+        B = semiminorAxis * (k2 / 8 - Math.pow(k2, 2) / 32 + 15 * Math.pow(k2, 3) / 1024);
+        C = semiminorAxis * (Math.pow(k2, 2) / 128 - 3 * Math.pow(k2, 3) / 512);
 
         sigma0 = (S - (B + C * cos2O1) * sin2O1) / A;
         cos2O0 = Math.cos(2 * sigma0);
@@ -224,13 +308,13 @@ public class GeodeticCoordinateSystem {
         sigma = sigma0 + (B + 5 * C * (cos2O1 * cos2O0 - sin2O1 * sin2O0)) * (sin2O1 * cos2O0 + cos2O1 * sin2O0) / A;
 
         //计算经度改正数
-        alpha = (e2 / 2 + Math.pow(e2, 2) / 8 + Math.pow(e2, 3) / 16) - (Math.pow(e2, 2) / 16 + Math.pow(e2, 3) / 16) * Math.pow(cosA0, 2) + (3 * Math.pow(e2, 3) / 128) * Math.pow(cosA0, 4);
-        beta = (Math.pow(e2, 2) / 32 + Math.pow(e2, 3) / 32) * Math.pow(cosA0, 2) - (Math.pow(e2, 3) / 64) * Math.pow(cosA0, 4);
+        alpha = (firstEccentricity / 2 + Math.pow(firstEccentricity, 2) / 8 + Math.pow(firstEccentricity, 3) / 16) - (Math.pow(firstEccentricity, 2) / 16 + Math.pow(firstEccentricity, 3) / 16) * Math.pow(cosA0, 2) + (3 * Math.pow(firstEccentricity, 3) / 128) * Math.pow(cosA0, 4);
+        beta = (Math.pow(firstEccentricity, 2) / 32 + Math.pow(firstEccentricity, 3) / 32) * Math.pow(cosA0, 2) - (Math.pow(firstEccentricity, 3) / 64) * Math.pow(cosA0, 4);
         delta = (alpha * sigma + beta * ((sin2O1 * cos2O0 + cos2O1 * sin2O0) - sin2O1)) * sinA0;
 
         //计算重点大地坐标及大地方位角
         sinu2 = sinu1 * Math.cos(sigma) + cosu1 * Math.cos(A1) * Math.sin(sigma);
-        B2 = Math.atan(sinu2 / (Math.sqrt(1 - e2) * Math.sqrt(1 - Math.pow(sinu2, 2))));
+        B2 = Math.atan(sinu2 / (Math.sqrt(1 - firstEccentricity) * Math.sqrt(1 - Math.pow(sinu2, 2))));
         lambda = Math.atan(sinA1 * Math.sin(sigma) / (cosu1 * Math.cos(sigma) - sinu1 * Math.sin(sigma) * Math.cos(A1)));
 
         //判断λ取值
@@ -280,12 +364,12 @@ public class GeodeticCoordinateSystem {
         ArrayList<Double> list = new ArrayList<>();
         double S, A1, A2, W1, W2, sinu1, sinu2, cosu1, cosu2, L, a1, a2, b1, b2, p, q, sinO, cosO, sigma, lambda, sinA0, cosA0_2, x, alpha, beta, delta1, delta2, y, k2, A, B, C, dB, dC;
         //计算两点的归化纬度
-        W1 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B1), 2));
-        W2 = Math.sqrt(1 - e2 * Math.pow(Math.sin(B2), 2));
+        W1 = Math.sqrt(1 - firstEccentricity * Math.pow(Math.sin(B1), 2));
+        W2 = Math.sqrt(1 - firstEccentricity * Math.pow(Math.sin(B2), 2));
 
         //辅助计算
-        sinu1 = Math.sin(B1) * Math.sqrt(1 - e2) / W1;
-        sinu2 = Math.sin(B2) * Math.sqrt(1 - e2) / W2;
+        sinu1 = Math.sin(B1) * Math.sqrt(1 - firstEccentricity) / W1;
+        sinu2 = Math.sin(B2) * Math.sqrt(1 - firstEccentricity) / W2;
         cosu1 = Math.cos(B1) / W1;
         cosu2 = Math.cos(B2) / W2;
         L = L2 - L1;
@@ -327,17 +411,17 @@ public class GeodeticCoordinateSystem {
             cosA0_2 = 1 - Math.pow(sinA0, 2);
             x = 2 * a1 - cosA0_2 * cosO;
 
-            alpha = (e2 / 2 + Math.pow(e2, 2) / 8 + Math.pow(e2, 3) / 16) - (Math.pow(e2, 2) / 16 + Math.pow(e2, 3) / 16) * cosA0_2 + (3 * Math.pow(e2, 3) / 128) * Math.pow(cosA0_2, 2);
-            beta = (Math.pow(e2, 2) / 32 + Math.pow(e2, 3) / 32) - (Math.pow(e2, 3) / 64) * cosA0_2;
+            alpha = (firstEccentricity / 2 + Math.pow(firstEccentricity, 2) / 8 + Math.pow(firstEccentricity, 3) / 16) - (Math.pow(firstEccentricity, 2) / 16 + Math.pow(firstEccentricity, 3) / 16) * cosA0_2 + (3 * Math.pow(firstEccentricity, 3) / 128) * Math.pow(cosA0_2, 2);
+            beta = (Math.pow(firstEccentricity, 2) / 32 + Math.pow(firstEccentricity, 3) / 32) - (Math.pow(firstEccentricity, 3) / 64) * cosA0_2;
             delta2 = (alpha * sigma - 2 * beta * x * sinO) * sinA0;
             list1.add(sigma);
         } while (Math.abs(delta2 - delta1) > precision);
 
         //计算系数A，B"，C"和大地线S
-        k2 = de2 * cosA0_2;
-        A = b * (1 + k2 / 4 - 3 * Math.pow(k2, 2) / 64 + 5 * Math.pow(k2, 3) / 256);
-        B = b * (k2 / 8 - Math.pow(k2, 2) / 32 + 15 * Math.pow(k2, 3) / 1024);
-        C = b * (Math.pow(k2, 2) / 128 - 3 * Math.pow(k2, 3) / 512);
+        k2 = secondEccentricity * cosA0_2;
+        A = semiminorAxis * (1 + k2 / 4 - 3 * Math.pow(k2, 2) / 64 + 5 * Math.pow(k2, 3) / 256);
+        B = semiminorAxis * (k2 / 8 - Math.pow(k2, 2) / 32 + 15 * Math.pow(k2, 3) / 1024);
+        C = semiminorAxis * (Math.pow(k2, 2) / 128 - 3 * Math.pow(k2, 3) / 512);
         dB = 2 * B / cosA0_2;
         dC = 2 * C / Math.pow(cosA0_2, 2);
 
@@ -369,7 +453,7 @@ public class GeodeticCoordinateSystem {
      * @return 子午圈曲率半径，单位：米
      */
     public double calculateMeridianCurvatureRadius(double eit2) {
-        return c / Math.pow(1 + eit2, 1.5);
+        return poleCurvatureRadius / Math.pow(1 + eit2, 1.5);
     }
 
     /**
@@ -383,7 +467,7 @@ public class GeodeticCoordinateSystem {
      * @return 卯酉圈曲率半径，单位：米
      */
     public double calculatePrimeVerticalCurvatureRadius(double eit2) {
-        return c / Math.sqrt(1 + eit2);
+        return poleCurvatureRadius / Math.sqrt(1 + eit2);
     }
 
     /**
@@ -397,7 +481,7 @@ public class GeodeticCoordinateSystem {
      * @return 平均曲率半径，单位：米
      */
     public double calculateAverageCurvatureRadius(double eit2) {
-        return c / (1 + eit2);
+        return poleCurvatureRadius / (1 + eit2);
     }
 
     /**
@@ -423,7 +507,7 @@ public class GeodeticCoordinateSystem {
      * @return 平行圈弧长，单位：米
      */
     public double calculateParallelCircleArc(double l, double B) {
-        return calculatePrimeVerticalCurvatureRadius(de2 * Math.pow(Math.cos(B), 2)) * Math.cos(B) * l;
+        return calculatePrimeVerticalCurvatureRadius(secondEccentricity * Math.pow(Math.cos(B), 2)) * Math.cos(B) * l;
     }
 
     /**
@@ -480,11 +564,11 @@ public class GeodeticCoordinateSystem {
     public double[] calculateMeridianArcParameters() {
         if (meridianArcParameters == null) {
             double m0, m2, m4, m6, m8, a0, a2, a4, a6, a8;
-            m0 = a * (1 - e2);
-            m2 = 3.0 / 2 * e2 * m0;
-            m4 = 5.0 / 4 * e2 * m2;
-            m6 = 7.0 / 6 * e2 * m4;
-            m8 = 9.0 / 8 * e2 * m6;
+            m0 = semimajorAxis * (1 - firstEccentricity);
+            m2 = 3.0 / 2 * firstEccentricity * m0;
+            m4 = 5.0 / 4 * firstEccentricity * m2;
+            m6 = 7.0 / 6 * firstEccentricity * m4;
+            m8 = 9.0 / 8 * firstEccentricity * m6;
 
             a0 = m0 + m2 / 2 + 3.0 / 8 * m4 + 5.0 / 16 * m6 + 35.0 / 128 * m8;
             a2 = m2 / 2 + m4 / 2 + 15.0 / 32 * m6 + 7.0 / 16 * m8;
@@ -502,8 +586,8 @@ public class GeodeticCoordinateSystem {
      *
      * @return 椭圆长半轴a
      */
-    public final double getA() {
-        return a;
+    public final double getSemimajorAxis() {
+        return semimajorAxis;
     }
 
     /**
@@ -511,8 +595,8 @@ public class GeodeticCoordinateSystem {
      *
      * @return 椭圆短半轴b
      */
-    public final double getB() {
-        return b;
+    public final double getSemiminorAxis() {
+        return semiminorAxis;
     }
 
     /**
@@ -520,8 +604,8 @@ public class GeodeticCoordinateSystem {
      *
      * @return 椭圆第一偏心率e^2
      */
-    public final double getE2() {
-        return e2;
+    public final double getFirstEccentricity() {
+        return firstEccentricity;
     }
 
     /**
@@ -529,8 +613,8 @@ public class GeodeticCoordinateSystem {
      *
      * @return 椭圆第二偏心率e'^2
      */
-    public final double getDE2() {
-        return de2;
+    public final double getSecondEccentricity() {
+        return secondEccentricity;
     }
 
     /**
@@ -538,8 +622,17 @@ public class GeodeticCoordinateSystem {
      *
      * @return 椭圆扁率α
      */
-    public final double getAlpha() {
-        return (a - b) / a;
+    public final double getFlattening() {
+        return flattening;
+    }
+
+    /**
+     * 获取椭圆扁率倒数 1/α
+     *
+     * @return 椭圆扁率倒数 1/α
+     */
+    public final double getInverseFlattening() {
+        return 1 / flattening;
     }
 
     /**
@@ -547,8 +640,8 @@ public class GeodeticCoordinateSystem {
      *
      * @return 椭圆极点处的子午线曲率半径c
      */
-    public final double getC() {
-        return c;
+    public final double getPoleCurvatureRadius() {
+        return poleCurvatureRadius;
     }
 
     /**
@@ -560,15 +653,45 @@ public class GeodeticCoordinateSystem {
         return name;
     }
 
+    /**
+     * 获取大地坐标系ID
+     *
+     * @return 大地坐标系ID
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * 获取大地坐标系椭球体名称
+     *
+     * @return 大地坐标系椭球体名称
+     */
+    public String getReferenceEllipsoidName() {
+        return referenceEllipsoidName;
+    }
+
+    /**
+     * 获取大地坐标系起始子午线
+     *
+     * @return 大地坐标系起始子午线
+     */
+    public double getPrimeMeridian() {
+        return primeMeridian;
+    }
+
     @Override
     public String toString() {
         return "GeodeticCoordinateSystem{" +
-                "name='" + name + '\'' +
-                ", a=" + a +
-                ", b=" + b +
-                ", c=" + c +
-                ", e2=" + e2 +
-                ", de2=" + de2 +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", reference ellipsoid name=" + referenceEllipsoidName+
+                ", prime meridian=" + primeMeridian +
+                ", semi major axis=" + semimajorAxis +
+                ", semi minor axis=" + semiminorAxis +
+                ", pole curvature radius=" + poleCurvatureRadius +
+                ", first eccentricity=" + firstEccentricity +
+                ", second eccentricity=" + secondEccentricity +
                 '}';
     }
 
@@ -576,58 +699,9 @@ public class GeodeticCoordinateSystem {
     public boolean equals(Object obj) {
         if (obj instanceof GeodeticCoordinateSystem) {
             GeodeticCoordinateSystem system = (GeodeticCoordinateSystem) obj;
-            return this.a == system.a && this.b == system.b;
+            return this.semimajorAxis == system.semimajorAxis && this.semiminorAxis == system.semiminorAxis;
         } else {
             return super.equals(obj);
-        }
-    }
-
-    /**
-     * 储存已知大地坐标系的枚举类型
-     */
-    public enum RecordedSystem {
-
-        /**
-         * 2000国家大地坐标系实例
-         */
-        CGCS2000(new GeodeticCoordinateSystem(6378137, 6356752.31414, "2000国家大地坐标系")),
-
-        /**
-         * 1980年西安大地坐标系实例
-         */
-        Xian_1980(new GeodeticCoordinateSystem(6378140, 6356755.2882, "1980年西安大地坐标系")),
-
-        /**
-         * 1954年北京大地坐标系实例
-         */
-        Beijing_1954(new GeodeticCoordinateSystem(6378245, 6356863.0188, "1954年北京大地坐标系")),
-
-        /**
-         * WGS 1984大地坐标系实例
-         */
-        WGS_1984(new GeodeticCoordinateSystem(6378137.0, 6356752.314245179, "WGS 1984大地坐标系"));
-
-        /**
-         * 大地坐标系实例
-         */
-        private final GeodeticCoordinateSystem system;
-
-        /**
-         * 枚举构造器
-         *
-         * @param system {@link GeodeticCoordinateSystem} 大地坐标系实例
-         */
-        RecordedSystem(GeodeticCoordinateSystem system) {
-            this.system = system;
-        }
-
-        /**
-         * 获取大地坐标系的 {@link GeodeticCoordinateSystem} 实例
-         *
-         * @return GeodeticCoordinateSystem 实例
-         */
-        public GeodeticCoordinateSystem getSystem() {
-            return system;
         }
     }
 }

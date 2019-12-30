@@ -327,8 +327,8 @@ public class UserInterfaceController {
                 return null;
             }
         });
-        for (GeodeticCoordinateSystem.RecordedSystem recordedSystem : GeodeticCoordinateSystem.RecordedSystem.values()) {
-            systemComboBox.getItems().add(recordedSystem.getSystem());
+        for (GeodeticCoordinateSystem recordedSystem : GeodeticCoordinateSystem.getSystems()) {
+            systemComboBox.getItems().add(recordedSystem);
         }
 
         //默认选择第一项
@@ -511,7 +511,7 @@ public class UserInterfaceController {
 
             if (processPane != null) {
                 processTextArea.clear();
-                processTextArea.appendText(String.format(geodeticCoordinateSystemIntroduction, geodeticSystem.getName(), geodeticSystem.getA(), geodeticSystem.getB(), 1 / geodeticSystem.getAlpha(), geodeticSystem.getE2(), geodeticSystem.getDE2(), geodeticSystem.getC()));
+                processTextArea.appendText(String.format(geodeticCoordinateSystemIntroduction, geodeticSystem.getName(), geodeticSystem.getSemimajorAxis(), geodeticSystem.getSemiminorAxis(), 1 / geodeticSystem.getFlattening(), geodeticSystem.getFirstEccentricity(), geodeticSystem.getSecondEccentricity(), geodeticSystem.getPoleCurvatureRadius()));
                 processTextArea.appendText(String.format(toGeoInputParametersIntroduction, X, Y, Z, precisionTextField.getText()));
                 processTextArea.appendText(outputResultIntroduction);
                 processTextArea.appendText(String.format(geodeticIterationStart, LBHC.get(4)));
@@ -577,7 +577,7 @@ public class UserInterfaceController {
 
             if (processPane != null) {
                 processTextArea.clear();
-                processTextArea.appendText(String.format(geodeticCoordinateSystemIntroduction, geodeticSystem.getName(), geodeticSystem.getA(), geodeticSystem.getB(), 1 / geodeticSystem.getAlpha(), geodeticSystem.getE2(), geodeticSystem.getDE2(), geodeticSystem.getC()));
+                processTextArea.appendText(String.format(geodeticCoordinateSystemIntroduction, geodeticSystem.getName(), geodeticSystem.getSemimajorAxis(), geodeticSystem.getSemiminorAxis(), 1 / geodeticSystem.getFlattening(), geodeticSystem.getFirstEccentricity(), geodeticSystem.getSecondEccentricity(), geodeticSystem.getPoleCurvatureRadius()));
                 processTextArea.appendText(String.format(toSpaInputParametersIntroduction, L, B, H));
                 processTextArea.appendText(outputResultIntroduction);
                 processTextArea.appendText(String.format(spatialXResult, XYZ.get(0)));

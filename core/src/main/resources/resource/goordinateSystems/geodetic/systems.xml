@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<systems>
+    <system>
+        <id>1</id>
+        <referenceEllipsoidName>CGCS2000</referenceEllipsoidName>
+        <names>
+            <zh_cn>200国家大地坐标系</zh_cn>
+            <en_us>China Geodetic Coordinate System 2000</en_us>
+        </names>
+        <primeMeridian>0.0</primeMeridian>
+        <semimajorAxis>6378137.0</semimajorAxis>
+        <semiminorAxis>6356752.31414</semiminorAxis>
+    </system>
+    <system>
+        <id>2</id>
+        <referenceEllipsoidName>IAG_75</referenceEllipsoidName>
+        <names>
+            <zh_cn>1980年西安大地坐标系</zh_cn>
+            <en_us>Xi'an 80 Coordinate System</en_us>
+        </names>
+        <primeMeridian>0.0</primeMeridian>
+        <semimajorAxis>6378140.0</semimajorAxis>
+        <semiminorAxis>6356755.2881575287</semiminorAxis>
+    </system>
+    <system>
+        <id>3</id>
+        <referenceEllipsoidName>Krasovsky_1940</referenceEllipsoidName>
+        <names>
+            <zh_cn>1954年北京大地坐标系</zh_cn>
+            <en_us>Beijing 54 Coordinate System</en_us>
+        </names>
+        <primeMeridian>0.0</primeMeridian>
+        <semimajorAxis>6378245.0</semimajorAxis>
+        <semiminorAxis>6356863.0187730473</semiminorAxis>
+    </system>
+    <system>
+        <id>4</id>
+        <referenceEllipsoidName>WGS_1984</referenceEllipsoidName>
+        <names>
+            <zh_cn>WGS-84坐标系</zh_cn>
+            <en_us>World Geodetic System 1984</en_us>
+        </names>
+        <primeMeridian>0.0</primeMeridian>
+        <semimajorAxis>6378137.0</semimajorAxis>
+        <semiminorAxis>6356752.314245</semiminorAxis>
+    </system>
+</systems>

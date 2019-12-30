@@ -1,5 +1,8 @@
 module geodetic.core {
-    exports club.magiccrazyman.geodetic.core.coordinatesystem.projection;
+    requires dom4j;
+    requires java.xml;
+
+    exports club.magiccrazyman.geodetic.core.coordinatesystem.projection ;
     exports club.magiccrazyman.geodetic.core.coordinatesystem;
     exports club.magiccrazyman.geodetic.core.tools;
 }

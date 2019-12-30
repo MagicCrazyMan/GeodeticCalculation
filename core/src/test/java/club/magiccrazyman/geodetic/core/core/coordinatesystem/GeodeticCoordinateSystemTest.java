@@ -10,8 +10,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GeodeticCoordinateSystemTest {
 
-    private GeodeticCoordinateSystem CGCS2000 = GeodeticCoordinateSystem.RecordedSystem.CGCS2000.getSystem();
-    private GeodeticCoordinateSystem Beijing54 = GeodeticCoordinateSystem.RecordedSystem.Beijing_1954.getSystem();
+    private GeodeticCoordinateSystem CGCS2000 = GeodeticCoordinateSystem.getSystemById(1);
+    private GeodeticCoordinateSystem Beijing54 = GeodeticCoordinateSystem.getSystemById(3);
 
     @Test
     void transformToGeodeticCoordinateSystem() {
