@@ -17,8 +17,8 @@ class GaussKrugerProjectionCoordinateSystemTest {
 
     @Test
     void forwardCalculation() {
-        double L = CalculationTools.degree2Rad(111 + 17.0 / 60 + 58.3596 / 3600);
-        double B = CalculationTools.degree2Rad(30 + 45.0 / 60 + 25.4425 / 3600);
+        double L = CalculationTools.degrees2Radians(111 + 17.0 / 60 + 58.3596 / 3600);
+        double B = CalculationTools.degrees2Radians(30 + 45.0 / 60 + 25.4425 / 3600);
 
         ArrayList<Double> xy = cgcs2000_3_111E.forwardCalculation(L, B);
 
@@ -41,8 +41,8 @@ class GaussKrugerProjectionCoordinateSystemTest {
 
         ArrayList<Double> LBlMNC = cgcs2000_3_111E.backwardCalculation(x, y, precision, true);
 
-        String L = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlMNC.get(0)));
-        String B = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(LBlMNC.get(1)));
+        String L = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(LBlMNC.get(0)));
+        String B = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(LBlMNC.get(1)));
         int count = (int) (double) LBlMNC.get(5);
 
         assertEquals("112°17'58.3596\"", L, String.format("L：%f", LBlMNC.get(0)));
@@ -71,15 +71,15 @@ class GaussKrugerProjectionCoordinateSystemTest {
 
     @Test
     void utmCalculation() {
-        double L = CalculationTools.degree2Rad(112 + 17.0 / 60 + 58.3596 / 3600);
-        double B = CalculationTools.degree2Rad(30 + 45.0 / 60 + 25.4425 / 3600);
+        double L = CalculationTools.degrees2Radians(112 + 17.0 / 60 + 58.3596 / 3600);
+        double B = CalculationTools.degrees2Radians(30 + 45.0 / 60 + 25.4425 / 3600);
         ArrayList<Double> xy = utm.forwardCalculation(L, B);
 
         double precision = 0.00000000000000001;
         ArrayList<Double> lb = utm.backwardCalculation(xy.get(0), xy.get(1), precision, true);
 
-        String Ld = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(lb.get(0)));
-        String Bd = CalculationTools.degreeFormatter(CalculationTools.rad2Degree(lb.get(1)));
+        String Ld = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(lb.get(0)));
+        String Bd = CalculationTools.degreesFormatter(CalculationTools.radians2Degrees(lb.get(1)));
 
         assertEquals("112°17'58.3596\"", Ld, String.format("L：%f", lb.get(0)));
         assertEquals("30°45'25.4425\"", Bd, String.format("B：%f", lb.get(1)));
